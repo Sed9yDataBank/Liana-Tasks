@@ -36,4 +36,12 @@ public class Task extends AuditModel{
         this.title = title;
         this.status = status;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
 }

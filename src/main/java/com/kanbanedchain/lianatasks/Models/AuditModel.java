@@ -18,10 +18,10 @@ public abstract class AuditModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final Long Id;
+    private Long Id;
 
     @CreatedDate
-    private final Date createdDate;
+    private Date createdDate;
 
     @LastModifiedDate
     private Date updatedDate;
@@ -30,5 +30,20 @@ public abstract class AuditModel implements Serializable {
         Id = id;
         this.createdDate = createdDate;
         this.updatedDate = updatedDate;
+    }
+
+    protected AuditModel() {
+    }
+
+    public Long getId() {
+        return Id;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
     }
 }

@@ -37,4 +37,16 @@ public class SubTask extends AuditModel {
         this.deadline = deadline;
         this.status = status;
     }
+
+    public String getContent() {
+        return content;
+    }
+
+    public LocalDateTime getDeadline() {
+        return deadline;
+    }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
 }

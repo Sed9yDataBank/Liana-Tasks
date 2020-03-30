@@ -35,4 +35,12 @@ public class Board extends AuditModel{
         this.title = title;
         this.backgroundImagePath = backgroundImagePath;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getBackgroundImagePath() {
+        return backgroundImagePath;
+    }
 }

@@ -15,9 +15,6 @@ import java.util.List;
 public class User extends AuditModel {
 
     @NotNull
-    private String name;
-
-    @NotNull
     @Column(unique = true)
     @Length(min = 4, max = 30)
     private String username;
@@ -33,10 +30,17 @@ public class User extends AuditModel {
     @JoinColumn(name = "board_id")
     private List<Board> boards;
 
-    public User(Long id, Date createdDate, Date updatedDate, String name, String username, String password) {
+    public User(Long id, Date createdDate, Date updatedDate, String username, String password) {
         super(id, createdDate, updatedDate);
-        this.name = name;
         this.username = username;
         this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }
