@@ -38,6 +38,10 @@ public class SubTask extends AuditModel {
         this.status = status;
     }
 
+    public SubTask() {
+
+    }
+
     public String getContent() {
         return content;
     }
@@ -48,5 +52,17 @@ public class SubTask extends AuditModel {
 
     public TaskStatus getStatus() {
         return status;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setDeadline(LocalDateTime deadline) {
+        this.deadline = deadline;
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
     }
 }
