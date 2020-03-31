@@ -5,8 +5,10 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -30,10 +32,22 @@ public class Board extends AuditModel{
     @ManyToOne(targetEntity = User.class)
     private User user;
 
+    public void addTask(Task task) {
+
+        if (Objects.isNull(tasks)) {
+            tasks = new ArrayList<>();
+        }
+        tasks.add(task);
+    }
+
     public Board(Long id, Date createdDate, Date updatedDate, String title, String backgroundImagePath) {
         super(id, createdDate, updatedDate);
         this.title = title;
         this.backgroundImagePath = backgroundImagePath;
+    }
+
+    public Board() {
+
     }
 
     public String getTitle() {
@@ -42,5 +56,13 @@ public class Board extends AuditModel{
 
     public String getBackgroundImagePath() {
         return backgroundImagePath;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setBackgroundImagePath(String backgroundImagePath) {
+        this.backgroundImagePath = backgroundImagePath;
     }
 }
