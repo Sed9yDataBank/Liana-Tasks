@@ -1,8 +1,6 @@
 package com.kanbanedchain.lianatasks.Repositories;
 
-import com.kanbanedchain.lianatasks.Models.Board;
 import com.kanbanedchain.lianatasks.Models.SubTask;
-import com.kanbanedchain.lianatasks.Models.Task;
 import com.kanbanedchain.lianatasks.Models.TaskStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

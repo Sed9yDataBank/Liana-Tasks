@@ -50,9 +50,8 @@ public class SubTaskImplementation implements SubTaskService {
 
     @Override
     @Transactional
-    public SubTask moveSubTask(Long boardId, Long taskId) {
+    public SubTask moveSubTask(Long taskId, Long subTaskId) {
         return null;
-        //Logic ?
     }
 
     @Override
