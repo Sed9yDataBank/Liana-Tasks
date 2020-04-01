@@ -23,7 +23,7 @@ public class Board extends AuditModel{
     private String backgroundImagePath;
 
     @OneToMany(
-            mappedBy = "board",
+            mappedBy = "boards",
             cascade = {CascadeType.ALL},
             fetch = FetchType.EAGER)
     @JoinColumn(name = "board_id")
@@ -66,3 +66,4 @@ public class Board extends AuditModel{
         this.backgroundImagePath = backgroundImagePath;
     }
 }
+

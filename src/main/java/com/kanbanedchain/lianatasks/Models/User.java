@@ -1,46 +1,121 @@
 package com.kanbanedchain.lianatasks.Models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-import org.hibernate.validator.constraints.Length;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.Date;
-import java.util.List;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.NaturalId;
 
 @Entity
-@Data
-@Table(name = "users")
-public class User extends AuditModel {
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {
+                "username"
+        }),
+        @UniqueConstraint(columnNames = {
+                "email"
+        })
+})
+public class User{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @NotNull
-    @Column(unique = true)
-    @Length(min = 4, max = 30)
+    @NotBlank
+    @Size(min=3, max = 50)
+    private String name;
+
+    @NotBlank
+    @Size(min=3, max = 50)
     private String username;
 
-    @NotNull
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @NaturalId
+    @NotBlank
+    @Size(max = 50)
+    @Email
+    private String email;
+
+    @NotBlank
+    @Size(min=6, max = 100)
     private String password;
 
-    @OneToMany(
-            mappedBy = "user",
-            cascade = {CascadeType.ALL},
-            fetch = FetchType.EAGER)
-    @JoinColumn(name = "board_id")
-    private List<Board> boards;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
-    public User(Long id, Date createdDate, Date updatedDate, String username, String password) {
-        super(id, createdDate, updatedDate);
+    @OneToMany(mappedBy = "users")
+    @JoinColumn(name = "board_id")
+    private List<Board> boards = new ArrayList<>();
+
+    public User() {}
+
+    public User(String name, String username, String email, String password) {
+        this.name = name;
         this.username = username;
+        this.email = email;
         this.password = password;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getUsername() {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public List<Board> getBoards() {
+        return boards;
+    }
+
+    public void setBoards(List<Board> boards) {
+        this.boards = boards;
     }
 }

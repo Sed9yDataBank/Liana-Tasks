@@ -28,6 +28,4 @@ public class BoardDTO {
     public String getBackgroundImagePath() {
         return board.getBackgroundImagePath();
     }
-
-
 }

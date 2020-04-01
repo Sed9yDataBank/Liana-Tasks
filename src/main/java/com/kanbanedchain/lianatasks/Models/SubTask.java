@@ -65,4 +65,12 @@ public class SubTask extends AuditModel {
     public void setStatus(TaskStatus status) {
         this.status = status;
     }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
+    }
 }

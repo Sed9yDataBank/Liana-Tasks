@@ -1,56 +1,80 @@
 package com.kanbanedchain.lianatasks.DTOs;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.kanbanedchain.lianatasks.Models.Board;
+import com.kanbanedchain.lianatasks.Models.Role;
 import com.kanbanedchain.lianatasks.Models.User;
-import org.springframework.util.Assert;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 
 public class UserDTO {
-
+    private long id;
+    private String name;
     private String username;
-
+    private String email;
     private String password;
+    private Set<Role> roles = new HashSet<>();
+    private List<Board> boards = new ArrayList<>();
 
     public UserDTO(User user) {
-        Assert.notNull(user.getUsername());
-        Assert.notNull(user.getPassword());
-        this.username = user.getUsername();
-        this.password = user.getPassword();
     }
 
-    public UserDTO(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public long getId() {
+        return id;
     }
 
-    protected UserDTO() {
-        //Default Constructor For Spring
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty
     public String getUsername() {
         return username;
     }
 
-    @JsonProperty
+    public String getEmail() {
+        return email;
+    }
+
     public String getPassword() {
         return password;
     }
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public List<Board> getBoard() {
+        return boards;
     }
 
-    @Override
-    public String toString() {
-        return "UserDTO{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void setBoard(List<Board> board) {
+        this.boards = board;
     }
 }
