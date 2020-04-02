@@ -1,6 +1,9 @@
 package com.kanbanedchain.lianatasks.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -22,14 +25,16 @@ public class Board extends AuditModel{
     @NotNull
     private String backgroundImagePath;
 
-    @OneToMany(
-            mappedBy = "boards",
-            cascade = {CascadeType.ALL},
-            fetch = FetchType.EAGER)
-    @JoinColumn(name = "board_id")
-    private List<Task> tasks;
+    @OneToMany(mappedBy = "board", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private List<Task> tasks = new ArrayList<>();
 
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumns({
+            @JoinColumn(name = "username", insertable = false, updatable = false, referencedColumnName = "username"),
+            @JoinColumn(name = "email", insertable = false, updatable = false, referencedColumnName = "email")
+    })
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private User user;
 
     public void addTask(Task task) {

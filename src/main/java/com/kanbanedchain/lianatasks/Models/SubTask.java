@@ -1,11 +1,12 @@
 package com.kanbanedchain.lianatasks.Models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -27,7 +28,10 @@ public class SubTask extends AuditModel {
     @NotNull
     private TaskStatus status;
 
-    @ManyToOne(targetEntity = Task.class)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "task_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private Task task;
 
     public SubTask(Long id, Date createdDate, Date updatedDate, String content,

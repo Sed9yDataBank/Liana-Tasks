@@ -35,6 +35,11 @@ public abstract class AuditModel implements Serializable {
     protected AuditModel() {
     }
 
+    public AuditModel(Date createdDate, Date updatedDate) {
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
+    }
+
     public Long getId() {
         return Id;
     }

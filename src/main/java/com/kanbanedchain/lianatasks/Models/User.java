@@ -1,9 +1,6 @@
 package com.kanbanedchain.lianatasks.Models;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -21,7 +18,7 @@ import org.hibernate.annotations.NaturalId;
                 "email"
         })
 })
-public class User{
+public class User extends AuditModel{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -44,23 +41,29 @@ public class User{
     @Size(min=6, max = 100)
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade={CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
+            joinColumns = {
+                    @JoinColumn(name = "username", referencedColumnName = "username"),
+                    @JoinColumn(name = "email", referencedColumnName = "email")
+            },
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "users")
-    @JoinColumn(name = "board_id")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     private List<Board> boards = new ArrayList<>();
 
     public User() {}
 
-    public User(String name, String username, String email, String password) {
+    public User(Date createdDate, Date updatedDate, String name, String username, String email, String password) {
+        super(createdDate, updatedDate);
         this.name = name;
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public User(String name, String username, String email, String encode) {
     }
 
     public Long getId() {
