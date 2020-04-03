@@ -55,15 +55,11 @@ public class User extends AuditModel{
 
     public User() {}
 
-    public User(Date createdDate, Date updatedDate, String name, String username, String email, String password) {
-        super(createdDate, updatedDate);
+    public User(String name, String username, String email, String password) {
         this.name = name;
         this.username = username;
         this.email = email;
         this.password = password;
-    }
-
-    public User(String name, String username, String email, String encode) {
     }
 
     public Long getId() {
