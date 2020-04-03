@@ -3,7 +3,6 @@ package com.kanbanedchain.lianatasks.Services;
 import com.kanbanedchain.lianatasks.DTOs.BoardDTO;
 import com.kanbanedchain.lianatasks.DTOs.TaskDTO;
 import com.kanbanedchain.lianatasks.Models.Board;
-import com.kanbanedchain.lianatasks.Models.Task;
 
 import java.util.List;
 import java.util.Optional;

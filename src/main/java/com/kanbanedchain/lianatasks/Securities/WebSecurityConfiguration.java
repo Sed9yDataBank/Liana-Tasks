@@ -21,7 +21,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
-        prePostEnabled = true
+        prePostEnabled = true,
+        proxyTargetClass=true
 )
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     final String clientUrl = Client.clientUrl;

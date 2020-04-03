@@ -1,16 +1,12 @@
 package com.kanbanedchain.lianatasks.Services.Implementations;
 
 import com.kanbanedchain.lianatasks.DTOs.SubTaskDTO;
-import com.kanbanedchain.lianatasks.DTOs.TaskDTO;
-import com.kanbanedchain.lianatasks.Models.Board;
 import com.kanbanedchain.lianatasks.Models.SubTask;
-import com.kanbanedchain.lianatasks.Models.Task;
 import com.kanbanedchain.lianatasks.Models.TaskStatus;
 import com.kanbanedchain.lianatasks.Repositories.BoardRepository;
 import com.kanbanedchain.lianatasks.Repositories.SubTaskRepository;
 import com.kanbanedchain.lianatasks.Repositories.TaskRepository;
 import com.kanbanedchain.lianatasks.Services.SubTaskService;
-import com.kanbanedchain.lianatasks.Services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

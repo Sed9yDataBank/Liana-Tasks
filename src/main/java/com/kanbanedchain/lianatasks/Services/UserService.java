@@ -1,6 +1,5 @@
 package com.kanbanedchain.lianatasks.Services;
 
-import com.kanbanedchain.lianatasks.DTOs.BoardDTO;
 import com.kanbanedchain.lianatasks.DTOs.UserDTO;
 import com.kanbanedchain.lianatasks.Models.User;
 

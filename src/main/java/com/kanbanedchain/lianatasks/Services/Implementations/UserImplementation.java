@@ -3,7 +3,6 @@ package com.kanbanedchain.lianatasks.Services.Implementations;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.kanbanedchain.lianatasks.DTOs.BoardDTO;
 import com.kanbanedchain.lianatasks.DTOs.UserDTO;
 import com.kanbanedchain.lianatasks.Models.User;
 import com.kanbanedchain.lianatasks.Repositories.BoardRepository;

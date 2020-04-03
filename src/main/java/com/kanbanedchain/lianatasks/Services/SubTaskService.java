@@ -1,9 +1,7 @@
 package com.kanbanedchain.lianatasks.Services;
 
 import com.kanbanedchain.lianatasks.DTOs.SubTaskDTO;
-import com.kanbanedchain.lianatasks.DTOs.TaskDTO;
 import com.kanbanedchain.lianatasks.Models.SubTask;
-import com.kanbanedchain.lianatasks.Models.Task;
 import com.kanbanedchain.lianatasks.Models.TaskStatus;
 
 import java.util.List;

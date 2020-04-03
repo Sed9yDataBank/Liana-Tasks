@@ -1,9 +1,7 @@
 package com.kanbanedchain.lianatasks.Services.Implementations;
 
 import com.kanbanedchain.lianatasks.DTOs.TaskDTO;
-import com.kanbanedchain.lianatasks.Models.Board;
 import com.kanbanedchain.lianatasks.Models.Task;
-import com.kanbanedchain.lianatasks.Repositories.BoardRepository;
 import com.kanbanedchain.lianatasks.Repositories.TaskRepository;
 import com.kanbanedchain.lianatasks.Services.TaskService;
 import lombok.RequiredArgsConstructor;
