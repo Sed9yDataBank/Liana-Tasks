@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 
 public class SubTaskDTO {
 
+    private  Long id;
+
     private String content;
 
     private LocalDateTime deadline;
@@ -15,12 +17,18 @@ public class SubTaskDTO {
     private TaskStatus status;
 
     public SubTaskDTO(SubTask subTask) {
+        this.id = subTask.getId();
         this.content = subTask.getContent();
         this.deadline = subTask.getDeadline();
         this.status = subTask.getStatus();
     }
 
     public SubTaskDTO() {
+    }
+
+    @JsonProperty
+    public Long getId() {
+        return id;
     }
 
     @JsonProperty

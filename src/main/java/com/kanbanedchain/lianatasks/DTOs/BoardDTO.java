@@ -20,6 +20,11 @@ public class BoardDTO {
     }
 
     @JsonProperty
+    public Long getId() {
+        return board.getId();
+    }
+
+    @JsonProperty
     public String getTitle() {
         return board.getTitle();
     }

@@ -16,32 +16,18 @@ import java.util.Date;
 @Data
 public abstract class AuditModel implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
-
     @CreatedDate
     private Date createdDate;
 
     @LastModifiedDate
     private Date updatedDate;
 
-    public AuditModel(Long id, Date createdDate, Date updatedDate) {
-        Id = id;
-        this.createdDate = createdDate;
-        this.updatedDate = updatedDate;
-    }
-
-    protected AuditModel() {
-    }
-
     public AuditModel(Date createdDate, Date updatedDate) {
         this.createdDate = createdDate;
         this.updatedDate = updatedDate;
     }
 
-    public Long getId() {
-        return Id;
+    protected AuditModel() {
     }
 
     public Date getCreatedDate() {

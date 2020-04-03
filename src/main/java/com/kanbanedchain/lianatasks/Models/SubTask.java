@@ -14,8 +14,13 @@ import java.util.Date;
 
 @Entity
 @Data
-@Table(name = "subtasks")
+@Table(name = "subTasks")
 public class SubTask extends AuditModel {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "subTask_Id")
+    private Long Id;
 
     @NotNull
     @Size(min = 4, max = 80)
@@ -29,14 +34,15 @@ public class SubTask extends AuditModel {
     private TaskStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "task_id", nullable = false)
+    @JoinColumn(name = "task_Id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Task task;
 
     public SubTask(Long id, Date createdDate, Date updatedDate, String content,
                    LocalDateTime deadline, TaskStatus status) {
-        super(id, createdDate, updatedDate);
+        super(createdDate, updatedDate);
+        this.Id = id;
         this.content = content;
         this.deadline = deadline;
         this.status = status;
@@ -44,6 +50,10 @@ public class SubTask extends AuditModel {
 
     public SubTask() {
 
+    }
+
+    public Long getId() {
+        return Id;
     }
 
     public String getContent() {
@@ -76,5 +86,9 @@ public class SubTask extends AuditModel {
 
     public void setTask(Task task) {
         this.task = task;
+    }
+
+    public void setId(Long id) {
+        Id = id;
     }
 }

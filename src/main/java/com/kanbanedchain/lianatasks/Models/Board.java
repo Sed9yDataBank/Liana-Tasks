@@ -18,6 +18,11 @@ import java.util.Objects;
 @Table(name = "boards")
 public class Board extends AuditModel{
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "board_Id")
+    private Long Id;
+
     @NotNull
     @Length(min = 3, max = 10)
     private String title;
@@ -46,7 +51,8 @@ public class Board extends AuditModel{
     }
 
     public Board(Long id, Date createdDate, Date updatedDate, String title, String backgroundImagePath) {
-        super(id, createdDate, updatedDate);
+        super(createdDate, updatedDate);
+        this.Id = id;
         this.title = title;
         this.backgroundImagePath = backgroundImagePath;
     }
@@ -63,12 +69,20 @@ public class Board extends AuditModel{
         return backgroundImagePath;
     }
 
+    public Long getId() {
+        return Id;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
 
     public void setBackgroundImagePath(String backgroundImagePath) {
         this.backgroundImagePath = backgroundImagePath;
+    }
+
+    public void setId(Long id) {
+        Id = id;
     }
 }
 

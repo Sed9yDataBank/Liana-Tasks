@@ -6,16 +6,24 @@ import com.kanbanedchain.lianatasks.Models.TaskStatus;
 
 public class TaskDTO {
 
+    private Long id;
+
     private String title;
 
     private TaskStatus status;
 
     public TaskDTO(Task task) {
+        this.id = task.getId();
         this.title = task.getTitle();
         this.status = task.getStatus();
     }
 
     public TaskDTO() {
+    }
+
+    @JsonProperty
+    public Long getId() {
+        return id;
     }
 
     @JsonProperty

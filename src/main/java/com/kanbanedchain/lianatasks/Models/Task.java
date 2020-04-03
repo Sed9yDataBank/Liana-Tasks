@@ -17,6 +17,11 @@ import java.util.List;
 @Table(name = "tasks")
 public class Task extends AuditModel{
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "task_Id")
+    private Long Id;
+
     @NotNull
     @Size(min = 3, max = 25)
     private String title;
@@ -30,13 +35,14 @@ public class Task extends AuditModel{
 
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "board_id", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "board_Id", nullable = false, referencedColumnName = "board_Id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Board board;
 
     public Task(Long id, Date createdDate, Date updatedDate, String title, TaskStatus status) {
-        super(id, createdDate, updatedDate);
+        super(createdDate, updatedDate);
+        this.Id = id;
         this.title = title;
         this.status = status;
     }
@@ -53,11 +59,19 @@ public class Task extends AuditModel{
         return status;
     }
 
+    public Long getId() {
+        return Id;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
 
     public void setStatus(TaskStatus status) {
         this.status = status;
+    }
+
+    public void setId(Long id) {
+        Id = id;
     }
 }
