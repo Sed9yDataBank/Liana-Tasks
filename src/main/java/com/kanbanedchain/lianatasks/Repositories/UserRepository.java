@@ -1,6 +1,7 @@
 package com.kanbanedchain.lianatasks.Repositories;
 
 import com.kanbanedchain.lianatasks.DTOs.UserDTO;
+import com.kanbanedchain.lianatasks.Models.Board;
 import com.kanbanedchain.lianatasks.Models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

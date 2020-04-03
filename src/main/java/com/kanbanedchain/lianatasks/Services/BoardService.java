@@ -15,7 +15,7 @@ public interface BoardService {
 
     Optional<Board> getBoardByTitle(String title);
 
-    Board saveNewBoard(BoardDTO BoardDTO);
+    Board saveNewBoard(BoardDTO BoardDTO, Long id);
 
     Board updateBoard(Board oldBoard, BoardDTO newBoardDTO);
 
@@ -24,4 +24,6 @@ public interface BoardService {
     Board addNewTaskToBoard(Long BoardId, TaskDTO taskDTO);
 
     List<Board> listAllBoardsByUserId();
+
+    List<BoardDTO> getBoardsByUser(Long id);
 }

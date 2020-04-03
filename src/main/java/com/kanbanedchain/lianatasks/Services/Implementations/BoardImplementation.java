@@ -5,6 +5,7 @@ import com.kanbanedchain.lianatasks.DTOs.TaskDTO;
 import com.kanbanedchain.lianatasks.Models.Board;
 import com.kanbanedchain.lianatasks.Models.Task;
 import com.kanbanedchain.lianatasks.Repositories.BoardRepository;
+import com.kanbanedchain.lianatasks.Repositories.UserRepository;
 import com.kanbanedchain.lianatasks.Services.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class BoardImplementation implements BoardService {
 
     @Autowired
     private BoardRepository boardRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     @Transactional
@@ -45,16 +49,20 @@ public class BoardImplementation implements BoardService {
 
     @Override
     @Transactional
-    public Board saveNewBoard(BoardDTO boardDTO) {
-        return boardRepository.save(convertDTOToBoard(boardDTO));
+    public Board saveNewBoard(BoardDTO boardDTO, Long id) {
+
+        return userRepository.findById(id).map(user -> {
+            boardDTO.setUser(user);
+            return boardRepository.save(convertDTOToBoard(boardDTO));
+        }).orElseThrow(() -> new SecurityException("User With " + id + " Was Not Found , Unable To Create Board"));
     }
 
     @Override
     @Transactional
-    public Board updateBoard(Board oldboard, BoardDTO newBoardDTO) {
-        oldboard.setTitle(newBoardDTO.getTitle());
-        oldboard.setBackgroundImagePath((newBoardDTO.getBackgroundImagePath()));
-        return boardRepository.save(oldboard);
+    public Board updateBoard(Board oldBoard, BoardDTO newBoardDTO) {
+        oldBoard.setTitle(newBoardDTO.getTitle());
+        oldBoard.setBackgroundImagePath((newBoardDTO.getBackgroundImagePath()));
+        return boardRepository.save(oldBoard);
     }
 
     @Override
@@ -75,6 +83,15 @@ public class BoardImplementation implements BoardService {
     @Transactional
     public List<Board> listAllBoardsByUserId() {
         return boardRepository.listAllBoardsByUserId().collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    @Override
+    @Transactional
+    public List<BoardDTO> getBoardsByUser(Long id) {
+        return getBoardById(id)
+                .stream()
+                .map(board -> new BoardDTO(board))
+                .collect(Collectors.toList());
     }
 
     private Board convertDTOToBoard(BoardDTO boardDTO){

@@ -50,8 +50,7 @@ public class Board extends AuditModel{
         tasks.add(task);
     }
 
-    public Board(Long id, Date createdDate, Date updatedDate, String title, String backgroundImagePath) {
-        super(createdDate, updatedDate);
+    public Board(Long id, String title, String backgroundImagePath) {
         this.Id = id;
         this.title = title;
         this.backgroundImagePath = backgroundImagePath;

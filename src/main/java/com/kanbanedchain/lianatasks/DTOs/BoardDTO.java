@@ -3,6 +3,7 @@ package com.kanbanedchain.lianatasks.DTOs;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kanbanedchain.lianatasks.Models.Board;
+import com.kanbanedchain.lianatasks.Models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +15,9 @@ public class BoardDTO {
 
     @JsonIgnore
     private Board board;
+
+    @JsonIgnore
+    private User user;
 
     public BoardDTO(Board board) {
         this.board = board;
@@ -32,5 +36,9 @@ public class BoardDTO {
     @JsonProperty
     public String getBackgroundImagePath() {
         return board.getBackgroundImagePath();
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
