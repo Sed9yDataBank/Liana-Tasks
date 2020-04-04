@@ -17,6 +17,8 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/boards")
+@CrossOrigin(origins = "http://localhost:4200")
 public class BoardController {
     final String clientUrl = Client.clientUrl;
 

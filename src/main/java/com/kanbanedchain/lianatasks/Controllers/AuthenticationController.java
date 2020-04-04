@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 import com.kanbanedchain.lianatasks.Messages.Requests.LoginForm;
 import com.kanbanedchain.lianatasks.Messages.Requests.SignUpForm;
