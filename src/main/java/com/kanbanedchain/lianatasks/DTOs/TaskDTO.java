@@ -1,6 +1,8 @@
 package com.kanbanedchain.lianatasks.DTOs;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.kanbanedchain.lianatasks.Models.Board;
 import com.kanbanedchain.lianatasks.Models.Task;
 import com.kanbanedchain.lianatasks.Models.TaskStatus;
 
@@ -21,9 +23,16 @@ public class TaskDTO {
     public TaskDTO() {
     }
 
+    @JsonIgnore
+    private Board board;
+
     @JsonProperty
     public Long getId() {
         return id;
+    }
+
+    public Board getBoard() {
+        return board;
     }
 
     @JsonProperty
@@ -42,5 +51,9 @@ public class TaskDTO {
 
     public void setStatus(TaskStatus status) {
         this.status = status;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
     }
 }

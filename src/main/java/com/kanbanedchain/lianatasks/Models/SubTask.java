@@ -39,9 +39,8 @@ public class SubTask extends AuditModel {
     @JsonIgnore
     private Task task;
 
-    public SubTask(Long id, Date createdDate, Date updatedDate, String content,
+    public SubTask(Long id, String content,
                    LocalDateTime deadline, TaskStatus status) {
-        super(createdDate, updatedDate);
         this.Id = id;
         this.content = content;
         this.deadline = deadline;

@@ -40,8 +40,7 @@ public class Task extends AuditModel{
     @JsonIgnore
     private Board board;
 
-    public Task(Long id, Date createdDate, Date updatedDate, String title, TaskStatus status) {
-        super(createdDate, updatedDate);
+    public Task(Long id, String title, TaskStatus status) {
         this.Id = id;
         this.title = title;
         this.status = status;

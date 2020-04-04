@@ -2,6 +2,7 @@ package com.kanbanedchain.lianatasks.Services.Implementations;
 
 import com.kanbanedchain.lianatasks.DTOs.TaskDTO;
 import com.kanbanedchain.lianatasks.Models.Task;
+import com.kanbanedchain.lianatasks.Repositories.BoardRepository;
 import com.kanbanedchain.lianatasks.Repositories.TaskRepository;
 import com.kanbanedchain.lianatasks.Services.TaskService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,9 @@ public class TaskImplementation implements TaskService {
 
     @Autowired
     private TaskRepository taskRepository;
+
+    @Autowired
+    private BoardRepository boardRepository;
 
     @Override
     @Transactional
@@ -43,8 +47,11 @@ public class TaskImplementation implements TaskService {
 
     @Override
     @Transactional
-    public Task saveNewTask(TaskDTO taskDTO) {
+    public Task saveNewTask(Long id, TaskDTO taskDTO) {
+        return boardRepository.findById(id).map(board -> {
+            taskDTO.setBoard(board);
         return taskRepository.save(convertDTOToTask(taskDTO));
+        }).orElseThrow(() -> new SecurityException("Board With " + id + " Was Not Found , Unable To Create Task"));
     }
 
     @Override

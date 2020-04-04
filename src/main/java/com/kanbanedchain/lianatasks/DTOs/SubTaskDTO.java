@@ -1,7 +1,9 @@
 package com.kanbanedchain.lianatasks.DTOs;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kanbanedchain.lianatasks.Models.SubTask;
+import com.kanbanedchain.lianatasks.Models.Task;
 import com.kanbanedchain.lianatasks.Models.TaskStatus;
 
 import java.time.LocalDateTime;
@@ -24,6 +26,14 @@ public class SubTaskDTO {
     }
 
     public SubTaskDTO() {
+    }
+
+    @JsonIgnore
+    private Task task;
+
+
+    public void setTask(Task task) {
+        this.task = task;
     }
 
     @JsonProperty

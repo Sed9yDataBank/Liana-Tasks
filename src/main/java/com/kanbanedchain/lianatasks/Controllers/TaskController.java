@@ -37,7 +37,7 @@ public class TaskController {
     @GetMapping("/{id}")
     @CrossOrigin(origins = clientUrl)
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> getTask(@PathVariable Long id) {
+    public ResponseEntity<?> getTask(@PathVariable(value = "task_Id") Long id) {
         try {
             Optional<Task> optTask = taskService.getTaskById(id);
             if (optTask.isPresent()) {
@@ -73,10 +73,11 @@ public class TaskController {
     @PostMapping("/")
     @CrossOrigin(origins = clientUrl)
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> createTask(@RequestBody TaskDTO taskDTO) {
+    public ResponseEntity<?> createTask(@PathVariable (value = "board_Id") Long id,
+                                        @RequestBody TaskDTO taskDTO) {
         try {
             return new ResponseEntity<>(
-                    taskService.saveNewTask(taskDTO),
+                    taskService.saveNewTask(id, taskDTO),
                     HttpStatus.CREATED);
         } catch (Exception e) {
             return errorResponse();
@@ -86,7 +87,7 @@ public class TaskController {
     @PutMapping("/{id}")
     @CrossOrigin(origins = clientUrl)
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> updateTask(@PathVariable Long id, @RequestBody TaskDTO taskDTO) {
+    public ResponseEntity<?> updateTask(@PathVariable(value = "task_Id") Long id, @RequestBody TaskDTO taskDTO) {
         try {
             Optional<Task> optTask = taskService.getTaskById(id);
             if (optTask.isPresent()) {
@@ -104,7 +105,7 @@ public class TaskController {
     @DeleteMapping("/{id}")
     @CrossOrigin(origins = clientUrl)
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> deleteTask(@PathVariable Long id) {
+    public ResponseEntity<?> deleteTask(@PathVariable(value = "task_Id") Long id) {
         try {
             Optional<Task> optTask = taskService.getTaskById(id);
             if (optTask.isPresent()) {

@@ -54,10 +54,10 @@ public class BoardController {
         return new ResponseEntity<BoardListDTO>(boardListDTO, HttpStatus.OK);
     }
 
-    @PutMapping("/updateBoard/{id}")
+    @PutMapping("/updateBoard/{board_Id}")
     @CrossOrigin(origins = clientUrl)
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> updateBoardById(@PathVariable(value = "board_id") Long id,
+    public ResponseEntity<?> updateBoardById(@PathVariable(value = "board_Id") Long id,
                                              @RequestBody BoardDTO boardDTO) {
         try {
             Optional<Board> optionalBoard = boardService.getBoardById(id);
@@ -73,7 +73,7 @@ public class BoardController {
         }
     }
 
-    @PostMapping("/{board_id}/tasks/")
+    @PostMapping("/{board_Id}/tasks/")
     @CrossOrigin(origins = clientUrl)
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> createTaskAssignedToBoard(@PathVariable(value = "board_id") Long id,
@@ -87,10 +87,10 @@ public class BoardController {
         }
     }
 
-    @DeleteMapping("/deleteBoard/{board_id}")
+    @DeleteMapping("/deleteBoard/{board_Id}")
     @CrossOrigin(origins = clientUrl)
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> deleteBoardById(@PathVariable(value = "board_id") Long id) {
+    public ResponseEntity<?> deleteBoardById(@PathVariable(value = "board_Id") Long id) {
         return boardService.getBoardById(id).map(board -> {
             boardService.deleteBoard(board);
             return ResponseEntity.ok().build();

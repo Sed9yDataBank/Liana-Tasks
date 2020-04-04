@@ -20,7 +20,7 @@ public interface SubTaskService {
 
     Optional<SubTask> getSubTaskByDeadline(LocalDateTime deadline);
 
-    SubTask saveNewSubTask(SubTaskDTO subTaskDTO);
+    SubTask saveNewSubTask(Long id, SubTaskDTO subTaskDTO);
 
     SubTask updateSubTask(SubTask oldSubTask, SubTaskDTO newSubTaskDTO);
 

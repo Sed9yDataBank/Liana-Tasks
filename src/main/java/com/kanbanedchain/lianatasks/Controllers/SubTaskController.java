@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -42,7 +43,7 @@ public class SubTaskController {
     @GetMapping("/{id}")
     @CrossOrigin(origins = clientUrl)
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> getSubTask(@PathVariable Long id) {
+    public ResponseEntity<?> getSubTask(@PathVariable(value = "subTask_Id") Long id) {
         try {
             Optional<SubTask> optSubTask = subTaskService.getSubTaskById(id);
             if (optSubTask.isPresent()) {
@@ -56,6 +57,21 @@ public class SubTaskController {
             return errorResponse();
         }
     }
+
+    @PostMapping("/")
+    @CrossOrigin(origins = clientUrl)
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<?> createSubTask(@PathVariable (value = "task_Id") Long id,
+                                           @Valid @RequestBody SubTaskDTO subTaskDTO) {
+        try {
+            return new ResponseEntity<>(
+                    subTaskService.saveNewSubTask(id, subTaskDTO),
+                    HttpStatus.CREATED);
+        } catch (Exception e) {
+            return errorResponse();
+        }
+    }
+
 
     @GetMapping("")
     @CrossOrigin(origins = clientUrl)
@@ -102,23 +118,11 @@ public class SubTaskController {
         return null;
     }
 
-    @PostMapping("/")
-    @CrossOrigin(origins = clientUrl)
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> createSubTask(@RequestBody SubTaskDTO subTaskDTO) {
-        try {
-            return new ResponseEntity<>(
-                    subTaskService.saveNewSubTask(subTaskDTO),
-                    HttpStatus.CREATED);
-        } catch (Exception e) {
-            return errorResponse();
-        }
-    }
-
     @PutMapping("/{id}")
     @CrossOrigin(origins = clientUrl)
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> updateSubTask(@PathVariable Long id, @RequestBody SubTaskDTO subTaskDTO) {
+    public ResponseEntity<?> updateSubTask(@PathVariable(value = "subTask_Id") Long id,
+                                           @RequestBody SubTaskDTO subTaskDTO) {
         try {
             Optional<SubTask> optSubTask = subTaskService.getSubTaskById(id);
             if (optSubTask.isPresent()) {
@@ -136,7 +140,7 @@ public class SubTaskController {
     @DeleteMapping("/{id}")
     @CrossOrigin(origins = clientUrl)
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> deleteSubTask(@PathVariable Long id) {
+    public ResponseEntity<?> deleteSubTask(@PathVariable(value = "subTask_Id") Long id) {
         try {
             Optional<SubTask> optSubTask = subTaskService.getSubTaskById(id);
             if (optSubTask.isPresent()) {

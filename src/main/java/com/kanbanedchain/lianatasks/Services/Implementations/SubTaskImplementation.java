@@ -2,6 +2,7 @@ package com.kanbanedchain.lianatasks.Services.Implementations;
 
 import com.kanbanedchain.lianatasks.DTOs.SubTaskDTO;
 import com.kanbanedchain.lianatasks.Models.SubTask;
+import com.kanbanedchain.lianatasks.Models.Task;
 import com.kanbanedchain.lianatasks.Models.TaskStatus;
 import com.kanbanedchain.lianatasks.Repositories.BoardRepository;
 import com.kanbanedchain.lianatasks.Repositories.SubTaskRepository;
@@ -79,8 +80,11 @@ public class SubTaskImplementation implements SubTaskService {
 
     @Override
     @Transactional
-    public SubTask saveNewSubTask(SubTaskDTO subTaskDTO) {
-        return subTaskRepository.save(convertDTOToSubTask(subTaskDTO));
+    public SubTask saveNewSubTask(Long id, SubTaskDTO subTaskDTO) {
+        return taskRepository.findById(id).map(task -> {
+            subTaskDTO.setTask(task);
+            return subTaskRepository.save(convertDTOToSubTask(subTaskDTO));
+        }).orElseThrow(() -> new SecurityException("Task With " + id + " Was Not Found , Unable To Create SubTask"));
     }
 
     @Override
