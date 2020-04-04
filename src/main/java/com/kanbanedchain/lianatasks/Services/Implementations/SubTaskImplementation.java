@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -68,6 +69,12 @@ public class SubTaskImplementation implements SubTaskService {
     @Transactional
     public Optional<SubTask> getSubTaskByStatus(TaskStatus status) {
         return subTaskRepository.findSubTaskByStatus(status);
+    }
+
+    @Override
+    @Transactional
+    public Optional<SubTask> getSubTaskByDeadline(LocalDateTime deadline) {
+        return subTaskRepository.findSubTaskByDeadline(deadline);
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.kanbanedchain.lianatasks.DTOs.SubTaskDTO;
 import com.kanbanedchain.lianatasks.Models.SubTask;
 import com.kanbanedchain.lianatasks.Models.TaskStatus;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +17,8 @@ public interface SubTaskService {
     Optional<SubTask> getSubTaskById(Long id);
 
     Optional<SubTask> getSubTaskByStatus(TaskStatus status);
+
+    Optional<SubTask> getSubTaskByDeadline(LocalDateTime deadline);
 
     SubTask saveNewSubTask(SubTaskDTO subTaskDTO);
 
