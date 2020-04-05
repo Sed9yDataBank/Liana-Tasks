@@ -70,7 +70,7 @@ public class TaskController {
         }
     }
 
-    @PostMapping("/")
+    @PostMapping("/createTask/{board_Id}")
     @CrossOrigin(origins = clientUrl)
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> createTask(@PathVariable (value = "board_Id") Long id,

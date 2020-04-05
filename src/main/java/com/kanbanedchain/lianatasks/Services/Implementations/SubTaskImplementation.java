@@ -10,6 +10,7 @@ import com.kanbanedchain.lianatasks.Repositories.TaskRepository;
 import com.kanbanedchain.lianatasks.Services.SubTaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -45,11 +46,16 @@ public class SubTaskImplementation implements SubTaskService {
         this.subTaskRepository = subTaskRepository;
     }
 
-
     @Override
     @Transactional
-    public SubTask moveSubTask(Long taskId, Long subTaskId) {
-        return null;
+    public SubTask moveSubTask(Long id, Long subTaskId, SubTaskDTO subTaskDTO) {
+        if (!taskRepository.existsById(id)) {
+            throw new  SecurityException("Task With Id : " + id + " Was Not Found");
+        }
+        return getSubTaskById(subTaskId).map(subTask -> {
+            subTask.setTask(subTaskDTO.getTask());
+            return subTaskRepository.saveAndFlush(subTask);
+        }).orElseThrow(() -> new ExpressionException("SubTask With Id : " + subTaskId + " Was Not Found"));
     }
 
     @Override

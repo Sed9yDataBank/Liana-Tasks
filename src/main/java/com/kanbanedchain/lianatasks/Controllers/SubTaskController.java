@@ -58,7 +58,7 @@ public class SubTaskController {
         }
     }
 
-    @PostMapping("/")
+    @PostMapping("/createSubTask/{task_Id}")
     @CrossOrigin(origins = clientUrl)
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> createSubTask(@PathVariable (value = "task_Id") Long id,
@@ -110,12 +110,13 @@ public class SubTaskController {
         }
     }
 
-    @PutMapping("/move/{id}")
+    @PutMapping("/move/{task_Id}/{subTask_Id}")
     @CrossOrigin(origins = clientUrl)
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> updateSubTaskPlace () {
-        //Missing
-        return null;
+    public ResponseEntity<?> updateSubTaskPlace(@PathVariable(value = "task_Id") Long id,
+                                                 @PathVariable(value = "subTask_Id") Long subTaskId,
+                                                 @RequestBody SubTaskDTO subTaskDTO) {
+        return new ResponseEntity<>(subTaskService.moveSubTask(id, subTaskId, subTaskDTO), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

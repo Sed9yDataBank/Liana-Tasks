@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface SubTaskService {
 
-    SubTask moveSubTask(Long boardId, Long taskId);
+    SubTask moveSubTask(Long id, Long subTaskId, SubTaskDTO subTaskDTO);
 
     List<SubTask> getAllSubTasks();
 

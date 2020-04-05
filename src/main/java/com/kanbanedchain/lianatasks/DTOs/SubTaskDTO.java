@@ -36,6 +36,10 @@ public class SubTaskDTO {
         this.task = task;
     }
 
+    public Task getTask() {
+        return task;
+    }
+
     @JsonProperty
     public Long getId() {
         return id;
