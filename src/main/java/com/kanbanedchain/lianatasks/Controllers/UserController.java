@@ -32,7 +32,7 @@ public class UserController {
     @GetMapping("/getAllUser/{id}")
     @CrossOrigin(origins = clientUrl)
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<UserListDTO> getAllUser(@PathVariable("pid") Long id) {
+    public ResponseEntity<UserListDTO> getAllUserByBoardId(@PathVariable("board_Id") Long id) {
         UserListDTO userListDTO = new UserListDTO();
         userListDTO.setUserList(service.getUserByBoardsId(id));
         return new ResponseEntity<UserListDTO>(userListDTO, HttpStatus.OK);
@@ -41,7 +41,7 @@ public class UserController {
     @GetMapping("/getUser/{uid}")
     @CrossOrigin(origins = clientUrl)
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<UserListDTO> getUserById(@PathVariable("uid") Long uid) {
+    public ResponseEntity<UserListDTO> getUserById(@PathVariable("id") Long uid) {
         UserListDTO userListDTO = new UserListDTO();
         BeanUtils.copyProperties(service.getUser(uid), userListDTO);
         return new ResponseEntity<UserListDTO>(userListDTO, HttpStatus.OK);
