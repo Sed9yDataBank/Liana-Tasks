@@ -3,6 +3,7 @@ package com.kanbanedchain.lianatasks.Services;
 import com.kanbanedchain.lianatasks.DTOs.BoardDTO;
 import com.kanbanedchain.lianatasks.DTOs.TaskDTO;
 import com.kanbanedchain.lianatasks.Models.Board;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,10 @@ public interface BoardService {
     Optional<Board> getBoardByTitle(String title);
 
     Board saveNewBoard(BoardDTO BoardDTO, Long id);
+
+    void saveBoardImage(Long id, MultipartFile file);
+
+    byte[] downloadBoardImage(Long id);
 
     Board updateBoard(Board oldBoard, BoardDTO newBoardDTO);
 

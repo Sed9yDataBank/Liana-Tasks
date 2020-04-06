@@ -7,6 +7,8 @@ import com.kanbanedchain.lianatasks.Models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
+
 
 public class BoardDTO {
 
@@ -34,11 +36,14 @@ public class BoardDTO {
     }
 
     @JsonProperty
-    public String getBackgroundImagePath() {
+    public Optional<String> getBackgroundImagePath() {
         return board.getBackgroundImagePath();
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setBackgroundImagePath() {
     }
 }

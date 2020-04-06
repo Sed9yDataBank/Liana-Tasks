@@ -9,9 +9,11 @@ import com.kanbanedchain.lianatasks.Services.UserService;
 import com.kanbanedchain.lianatasks.Utils.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -37,6 +39,25 @@ public class BoardController {
         return new ResponseEntity<Boolean>(true, HttpStatus.OK);
     }
 
+    @PostMapping(
+              path = "createBoard/upload/{id}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+        )
+    @CrossOrigin(origins = clientUrl)
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+        public void setBoardBackgroundImage(@PathVariable(value = "board_Id") Long id,
+                                       @RequestParam("file") MultipartFile file) {
+        boardService.saveBoardImage(id, file);
+    }
+
+    @GetMapping("/download/{id}")
+    @CrossOrigin(origins = clientUrl)
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public byte[] downloadBoardImage(@PathVariable("board_Id") Long id) {
+        return boardService.downloadBoardImage(id);
+    }
+
     @GetMapping("/getAllBoards")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @CrossOrigin(origins = clientUrl)
@@ -54,7 +75,7 @@ public class BoardController {
         return new ResponseEntity<BoardListDTO>(boardListDTO, HttpStatus.OK);
     }
 
-    @PutMapping("/updateBoard/{board_Id}")
+    @PutMapping("/updateBoard/{id}")
     @CrossOrigin(origins = clientUrl)
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> updateBoardById(@PathVariable(value = "board_Id") Long id,
@@ -73,10 +94,10 @@ public class BoardController {
         }
     }
 
-    @PostMapping("/{board_Id}/tasks/")
+    @PostMapping("/{id}/tasks/")
     @CrossOrigin(origins = clientUrl)
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> createTaskAssignedToBoard(@PathVariable(value = "board_id") Long id,
+    public ResponseEntity<?> createTaskAssignedToBoard(@PathVariable(value = "board_Id") Long id,
                                                        @RequestBody TaskDTO taskDTO){
         try {
             return new ResponseEntity<>(
@@ -87,7 +108,7 @@ public class BoardController {
         }
     }
 
-    @DeleteMapping("/deleteBoard/{board_Id}")
+    @DeleteMapping("/deleteBoard/{id}")
     @CrossOrigin(origins = clientUrl)
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> deleteBoardById(@PathVariable(value = "board_Id") Long id) {

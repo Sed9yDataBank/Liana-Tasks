@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Entity
 @Data
@@ -26,7 +27,6 @@ public class Board extends AuditModel{
     @Length(min = 3, max = 10)
     private String title;
 
-    @NotNull
     private String backgroundImagePath;
 
     @OneToMany(mappedBy = "board", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
@@ -63,8 +63,8 @@ public class Board extends AuditModel{
         return title;
     }
 
-    public String getBackgroundImagePath() {
-        return backgroundImagePath;
+    public Optional<String> getBackgroundImagePath() {
+        return Optional.ofNullable(backgroundImagePath);
     }
 
     public Long getId() {
