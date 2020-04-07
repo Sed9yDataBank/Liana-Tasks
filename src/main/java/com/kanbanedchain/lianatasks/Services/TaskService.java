@@ -5,20 +5,19 @@ import com.kanbanedchain.lianatasks.Models.Task;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface TaskService {
 
     List<Task> getAllTasks();
 
-    Optional<Task> getTaskById(Long id);
+    Optional<Task> getTaskById(UUID taskId);
 
-    Optional<Task> getTaskByTitle(String title);
-
-    Task saveNewTask(Long id, TaskDTO taskDTO);
+    Task saveNewTask(UUID boardId, TaskDTO taskDTO);
 
     Task updateTask(Task oldTask, TaskDTO newTaskDTO);
 
     void deleteTask(Task task);
 
-    List<Task> listAllTasksByStatus();
+    Optional<Task> getTaskByTitle(String title);
 }

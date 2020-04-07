@@ -1,15 +1,23 @@
 package com.kanbanedchain.lianatasks.Services.Implementations;
 
+import com.amazonaws.services.dynamodbv2.xspec.L;
 import com.kanbanedchain.lianatasks.Bucket.BucketName;
 import com.kanbanedchain.lianatasks.DTOs.BoardDTO;
 import com.kanbanedchain.lianatasks.DTOs.BoardListDTO;
+import com.kanbanedchain.lianatasks.DTOs.NewBoardDTO;
 import com.kanbanedchain.lianatasks.DTOs.TaskDTO;
+import com.kanbanedchain.lianatasks.Exceptions.ApiRequestException;
 import com.kanbanedchain.lianatasks.FileStore.FileStore;
 import com.kanbanedchain.lianatasks.Models.Board;
+import com.kanbanedchain.lianatasks.Models.Invitation;
 import com.kanbanedchain.lianatasks.Models.Task;
+import com.kanbanedchain.lianatasks.Models.User;
 import com.kanbanedchain.lianatasks.Repositories.BoardRepository;
+import com.kanbanedchain.lianatasks.Repositories.InvitationRepository;
+import com.kanbanedchain.lianatasks.Repositories.PassCodeRepository;
 import com.kanbanedchain.lianatasks.Repositories.UserRepository;
 import com.kanbanedchain.lianatasks.Services.BoardService;
+import com.kanbanedchain.lianatasks.Services.InvitationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,65 +43,73 @@ public class BoardImplementation implements BoardService {
     @Autowired
     private FileStore fileStore;
 
+    @Autowired
+    private PassCodeRepository passCodeRepository;
+    @Autowired
+    private InvitationRepository invitationRepository;
+    @Autowired
+    private InvitationService mailService;
+
     @Override
     @Transactional
     public List<Board> getAllBoards() {
-        List<Board> boardsList = new ArrayList<>();
-        boardRepository.findAll().forEach(boardsList::add);
-        return boardsList;
+        return new ArrayList<Board>(boardRepository.findAll());
     }
 
     @Override
     @Transactional
-    public Optional<Board> getBoardById(Long id) {
-        return boardRepository.findById(id);
+    public Optional<Board> getBoardById(UUID boardId) {
+        return boardRepository.findById(boardId);
     }
 
     @Override
     @Transactional
-    public Optional<Board> getBoardByTitle(String title) {
-        return boardRepository.findBoardByTitle(title);
+    public UUID saveNewBoard(NewBoardDTO newBoardDTO, UUID admin){
+        Board board = new Board();
+        board.setTitle(newBoardDTO.getTitle());
+        board.setAdmin(admin);
+        User user = Objects.requireNonNull(userRepository.findById(admin).orElse(null));
+        List<User> userList = new ArrayList<User>();
+        userList.add(user);
+        board.setUsers(userList);
+        Board savedBoard = boardRepository.save(board);
+
+
+        String code = mailService.generatePassCodeForBoard(savedBoard.getBoardId());
+        UUID[] users = newBoardDTO.getUsers();
+        inviteUsers(users, code, savedBoard.getBoardId());
+
+        return savedBoard.getBoardId();
     }
 
     @Override
     @Transactional
-    public Board saveNewBoard(BoardDTO boardDTO, Long id) {
-
-        return userRepository.findById(id).map(user -> {
-            boardDTO.setUser(user);
-            return boardRepository.save(convertDTOToBoard(boardDTO));
-        }).orElseThrow(() -> new SecurityException("User With " + id + " Was Not Found , Unable To Create Board"));
-    }
-
-    @Override
-    @Transactional
-    public void saveBoardImage(Long id, MultipartFile file) {
+    public void saveBoardImage(UUID boardId, MultipartFile file) {
         isFileEmpty(file);
         isImage(file);
 
-        BoardDTO board = getBoardOrThrow(id);
+        BoardDTO board = getBoardOrThrow(boardId);
         Map<String, String> metadata = extractMetadata(file);
 
-        String path = String.format("%s/%s", BucketName.BACKGROUND_IMAGE.getBucketName(), board.getId());
+        String path = String.format("%s/%s", BucketName.BACKGROUND_IMAGE.getBucketName(), board.getBoardId());
         String filename = String.format("%s-%s", file.getOriginalFilename(), UUID.randomUUID());
 
         try {
             fileStore.save(path, filename, Optional.of(metadata), file.getInputStream());
             board.setBackgroundImagePath();
-            boardRepository.save(convertDTOToBoard(board));
         } catch (IOException e) {
-            throw new IllegalStateException(e);
+            throw new ApiRequestException(board.getBackgroundImagePath() + " Could Not Be Saved");
         }
     }
 
     @Override
     @Transactional
-    public byte[] downloadBoardImage(Long id) {
-        BoardDTO board = getBoardOrThrow(id);
+    public byte[] downloadBoardImage(UUID boardId) {
+        BoardDTO board = getBoardOrThrow(boardId);
 
         String path = String.format("%s/%s",
                 BucketName.BACKGROUND_IMAGE.getBucketName(),
-                board.getId());
+                board.getBoardId());
 
         return board.getBackgroundImagePath()
                 .map(key -> fileStore.download(path, key))
@@ -115,32 +131,63 @@ public class BoardImplementation implements BoardService {
 
     @Override
     @Transactional
-    public Board addNewTaskToBoard(Long boardId, TaskDTO taskDTO) {
-        Board board = boardRepository.findById(boardId).get();
+    public Board addNewTaskToBoard(UUID boardId, TaskDTO taskDTO) {
+        Board board = Objects.requireNonNull(boardRepository.findById(boardId).orElse(null));
         board.addTask(convertDTOToTask(taskDTO));
         return boardRepository.save(board);
     }
 
     @Override
     @Transactional
-    public List<Board> listAllBoardsByUserId() {
-        return boardRepository.listAllBoardsByUserId().collect(Collectors.toCollection(ArrayList::new));
+    public boolean addUser(UUID userId, String code) {
+        boolean invited;
+        User user = Objects.requireNonNull(userRepository.findById(userId).orElse(null));
+        UUID passId = passCodeRepository.getPassIdByCode(code);
+        boolean ifInvited = invitationRepository.existsByUserId(userId);
+        List<UUID> invitedPid = invitationRepository.findByUserId(userId);
+        boolean checked = false;
+        for(UUID id: invitedPid) {
+            if(id.equals(passId)) {
+                checked = true;
+                break;
+            }
+        }
+
+        if( ifInvited && checked) {
+            invited = true;
+            Board p = Objects.requireNonNull(boardRepository.findById(passId).orElse(null));
+            List<User> users = p.getUsers();
+            users.add(user);
+            p.setUsers(users);
+            boardRepository.save(p);
+        } else {
+            invited = false;
+        }
+        return invited;
     }
 
     @Override
     @Transactional
-    public List<BoardDTO> getBoardsByUser(Long id) {
-        return getBoardById(id)
-                .stream()
-                .map(board -> new BoardDTO(board))
-                .collect(Collectors.toList());
+    public void inviteUsers(UUID[] users, String code, UUID passId) {
+
+        for( UUID userId: users) {
+            String email = Objects.requireNonNull(userRepository.findById(userId).orElse(null)).getEmail();
+            mailService.sendPassCode(email, code,
+                    Objects.requireNonNull(boardRepository.findById(passId).orElse(null)));
+            Invitation invitation = new Invitation();
+            Invitation.setPassId(passId);
+            Invitation.setUserId(userId);
+            invitationRepository.save(invitation);
+        }
     }
 
-    private Board convertDTOToBoard(BoardDTO boardDTO){
-        Board board = new Board();
-        board.setTitle(boardDTO.getTitle());
-        board.setBackgroundImagePath(boardDTO.getBackgroundImagePath().toString());
-        return board;
+    @Override
+    @Transactional
+    public BoardListDTO getAllByAdmin(UUID id) {
+        BoardListDTO list = new BoardListDTO();
+        list.setBoardList( (List<BoardDTO>) boardRepository.findByAdmin(id).stream().map
+                (BoardDTO::new).collect(Collectors.toList()));
+        return list;
     }
 
     private Task convertDTOToTask(TaskDTO taskDTO) {
@@ -157,14 +204,14 @@ public class BoardImplementation implements BoardService {
         return metadata;
     }
 
-    private BoardDTO getBoardOrThrow(Long id) {
+    private BoardDTO getBoardOrThrow(UUID boardId) {
         BoardListDTO boardListDTO = new BoardListDTO();
         return boardListDTO
                 .getBoardList()
                 .stream()
-                .filter(board -> board.getId().equals(id))
+                .filter(board -> board.getBoardId().equals(boardId))
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException(String.format("Board %s Not Found With Id : ", id)));
+                .orElseThrow(() -> new IllegalStateException(String.format("Board %s Not Found With Id : ", boardId)));
     }
 
     private void isImage(MultipartFile file) {

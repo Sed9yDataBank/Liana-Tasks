@@ -26,32 +26,30 @@ public class InvitationImplementation implements InvitationService {
 
     @Override
     @Transactional
-    public String generatePassCodeForBoard(Long id) {
+    public String generatePassCodeForBoard(UUID boardId) {
         String code = AuthenticationUtil.OTP(8);
         PassCode passCode = new PassCode();
         passCode.setCode(code);
-        passCode.setPid(id);
+        passCode.setPassId(boardId);
         passCodeRepository.save(passCode);
         return code;
     }
 
     @Override
     @Transactional
-    public String sendPassCode(String email, String passCode, Board board) {
+    public void sendPassCode(String email, String passCode, Board board) {
         String text = "You Have Been Invited To Join Board: " +
                 board.getTitle()+ " Use PassCode Given Below: " + passCode;
         String subject = "Invitation to Join Board";
         try {
             sendMail(email, text, subject);
         } catch (MessagingException e) {
-            return "";
         }
-        return passCode;
     }
 
     @Override
     @Transactional
-    public boolean sendMail(String to, String text, String subject) throws MessagingException {
+    public void sendMail(String to, String text, String subject) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message,true);
         try {
@@ -60,10 +58,9 @@ public class InvitationImplementation implements InvitationService {
             helper.setText(text);
         } catch (MessagingException e) {
             e.printStackTrace();
-            return false;
+            return;
         }
         mailSender.send(message);
-        return true;
     }
 }
 

@@ -7,10 +7,11 @@ import com.kanbanedchain.lianatasks.Models.Task;
 import com.kanbanedchain.lianatasks.Models.TaskStatus;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class SubTaskDTO {
 
-    private  Long id;
+    private UUID subTaskId;
 
     private String content;
 
@@ -19,7 +20,7 @@ public class SubTaskDTO {
     private TaskStatus status;
 
     public SubTaskDTO(SubTask subTask) {
-        this.id = subTask.getId();
+        this.subTaskId = subTask.getSubTaskId();
         this.content = subTask.getContent();
         this.deadline = subTask.getDeadline();
         this.status = subTask.getStatus();
@@ -41,8 +42,8 @@ public class SubTaskDTO {
     }
 
     @JsonProperty
-    public Long getId() {
-        return id;
+    public UUID getSubTaskId() {
+        return subTaskId;
     }
 
     @JsonProperty

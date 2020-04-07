@@ -6,16 +6,18 @@ import com.kanbanedchain.lianatasks.Models.Board;
 import com.kanbanedchain.lianatasks.Models.Task;
 import com.kanbanedchain.lianatasks.Models.TaskStatus;
 
+import java.util.UUID;
+
 public class TaskDTO {
 
-    private Long id;
+    private UUID taskId;
 
     private String title;
 
     private TaskStatus status;
 
     public TaskDTO(Task task) {
-        this.id = task.getId();
+        this.taskId = task.getTaskId();
         this.title = task.getTitle();
         this.status = task.getStatus();
     }
@@ -27,8 +29,8 @@ public class TaskDTO {
     private Board board;
 
     @JsonProperty
-    public Long getId() {
-        return id;
+    public UUID getTaskId() {
+        return taskId;
     }
 
     public Board getBoard() {

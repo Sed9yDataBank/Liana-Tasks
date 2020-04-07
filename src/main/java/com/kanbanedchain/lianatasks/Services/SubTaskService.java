@@ -7,24 +7,23 @@ import com.kanbanedchain.lianatasks.Models.TaskStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface SubTaskService {
 
-    SubTask moveSubTask(Long id, Long subTaskId, SubTaskDTO subTaskDTO);
+    SubTask moveSubTask(UUID taskId, UUID subTaskId, SubTaskDTO subTaskDTO);
 
     List<SubTask> getAllSubTasks();
 
-    Optional<SubTask> getSubTaskById(Long id);
+    Optional<SubTask> getSubTaskById(UUID subTaskId);
 
-    Optional<SubTask> getSubTaskByStatus(TaskStatus status);
-
-    Optional<SubTask> getSubTaskByDeadline(LocalDateTime deadline);
-
-    SubTask saveNewSubTask(Long id, SubTaskDTO subTaskDTO);
+    SubTask saveNewSubTask(UUID taskId, SubTaskDTO subTaskDTO);
 
     SubTask updateSubTask(SubTask oldSubTask, SubTaskDTO newSubTaskDTO);
 
     void deleteSubTask(SubTask subTask);
 
-    List<SubTask> listAllSubTasksByDeadline();
+    Optional<SubTask> getSubTaskByStatus(TaskStatus status);
+
+    Optional<SubTask> getSubTaskByDeadline(LocalDateTime deadline);
 }

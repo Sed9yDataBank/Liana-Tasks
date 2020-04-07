@@ -1,12 +1,10 @@
 package com.kanbanedchain.lianatasks.Controllers;
 
-import com.kanbanedchain.lianatasks.DTOs.BoardDTO;
-import com.kanbanedchain.lianatasks.DTOs.BoardListDTO;
-import com.kanbanedchain.lianatasks.DTOs.TaskDTO;
+import com.kanbanedchain.lianatasks.DTOs.*;
 import com.kanbanedchain.lianatasks.Models.Board;
+import com.kanbanedchain.lianatasks.Models.PassCode;
 import com.kanbanedchain.lianatasks.Services.BoardService;
 import com.kanbanedchain.lianatasks.Services.UserService;
-import com.kanbanedchain.lianatasks.Utils.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,130 +15,104 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/boards")
 @CrossOrigin(origins = "http://localhost:4200")
 public class BoardController {
-    final String clientUrl = Client.clientUrl;
 
     @Autowired
     private BoardService boardService;
 
     @Autowired
     private UserService userService;
+    private UUID boardId;
 
-    @PostMapping("/createBoard/{id}")
-    @CrossOrigin(origins = clientUrl)
+    @PostMapping("/createBoard/{userId}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<Boolean> createBoard(@PathVariable(value = "id") Long id,
-                                               @Valid @RequestBody BoardDTO newBoardDto) {
-        boardService.saveNewBoard(newBoardDto, id);
+    public ResponseEntity<Boolean> createBoard(@PathVariable(value = "userId") UUID userId,
+                                               @Valid @RequestBody NewBoardDTO newBoardDTO) {
+        boardService.saveNewBoard(newBoardDTO, userId);
         return new ResponseEntity<Boolean>(true, HttpStatus.OK);
     }
 
     @PostMapping(
-              path = "createBoard/upload/{id}",
+              path = "createBoard/upload/{boardId}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
         )
-    @CrossOrigin(origins = clientUrl)
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-        public void setBoardBackgroundImage(@PathVariable(value = "board_Id") Long id,
+    public void setBoardBackgroundImage(@PathVariable(value = "boardId") UUID boardId,
                                        @RequestParam("file") MultipartFile file) {
-        boardService.saveBoardImage(id, file);
+        boardService.saveBoardImage(boardId, file);
     }
 
-    @GetMapping("/download/{id}")
-    @CrossOrigin(origins = clientUrl)
+    @GetMapping("/download/{boardId}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public byte[] downloadBoardImage(@PathVariable("board_Id") Long id) {
-        return boardService.downloadBoardImage(id);
+    public byte[] downloadBoardImage(@PathVariable("boardId") UUID boardId) {
+        return boardService.downloadBoardImage(boardId);
     }
 
     @GetMapping("/getAllBoards")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    @CrossOrigin(origins = clientUrl)
     public ResponseEntity<BoardDTO> getAllBoards() {
         return new ResponseEntity<BoardDTO>((BoardDTO) boardService.getAllBoards(), HttpStatus.OK);
     }
 
-    @GetMapping("/getAllBoards/{id}")
+    @PutMapping("/updateBoard/{boardId}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    @CrossOrigin(origins = clientUrl)
-    public ResponseEntity<BoardListDTO> getAllBoardsByUserId(@PathVariable(value = "id") Long id) {
-
-        BoardListDTO boardListDTO = new BoardListDTO();
-        boardListDTO.setBoardList(boardService.getBoardsByUser(id));
-        return new ResponseEntity<BoardListDTO>(boardListDTO, HttpStatus.OK);
-    }
-
-    @PutMapping("/updateBoard/{id}")
-    @CrossOrigin(origins = clientUrl)
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> updateBoardById(@PathVariable(value = "board_Id") Long id,
+    public ResponseEntity<?> updateBoardById(@PathVariable(value = "boardId") UUID boardId,
                                              @RequestBody BoardDTO boardDTO) {
         try {
-            Optional<Board> optionalBoard = boardService.getBoardById(id);
+            Optional<Board> optionalBoard = boardService.getBoardById(boardId);
             if (optionalBoard.isPresent()) {
                 return new ResponseEntity<>(
                         boardService.updateBoard(optionalBoard.get(), boardDTO),
                         HttpStatus.OK);
             } else {
-                return noBoardFoundResponse(id);
+                return noBoardFoundResponse(boardId);
             }
         } catch (Exception e) {
             return errorResponse();
         }
     }
 
-    @PostMapping("/{id}/tasks/")
-    @CrossOrigin(origins = clientUrl)
+    @PostMapping("/{boardId}/tasks/")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> createTaskAssignedToBoard(@PathVariable(value = "board_Id") Long id,
+    public ResponseEntity<?> createTaskAssignedToBoard(@PathVariable(value = "boardId") UUID boardId,
                                                        @RequestBody TaskDTO taskDTO){
         try {
             return new ResponseEntity<>(
-                    boardService.addNewTaskToBoard(id, taskDTO),
+                    boardService.addNewTaskToBoard(boardId, taskDTO),
                     HttpStatus.CREATED);
         } catch (Exception e) {
             return errorResponse();
         }
     }
 
-    @DeleteMapping("/deleteBoard/{id}")
-    @CrossOrigin(origins = clientUrl)
+    @PostMapping("/inviteUser")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> deleteBoardById(@PathVariable(value = "board_Id") Long id) {
-        return boardService.getBoardById(id).map(board -> {
+    public ResponseEntity<Boolean> boardInvitation(@RequestBody CodeDTO codeDTO) {
+        boardService.addUser(codeDTO.getUserId(), codeDTO.getCode());
+        return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/deleteBoard/{boardId}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<?> deleteBoardById(@PathVariable(value = "boardId") UUID boardId) {
+        return boardService.getBoardById(boardId).map(board -> {
             boardService.deleteBoard(board);
             return ResponseEntity.ok().build();
-        }).orElseThrow(() -> new SecurityException("Board With " + id + " Was Not Found , Unable To Delete Board"));
+        }).orElseThrow((
+
+        ) -> new SecurityException("Board With " + boardId + " Was Not Found , Unable To Delete Board"));
     }
 
-    @GetMapping("")
-    @CrossOrigin(origins = clientUrl)
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> getBoardByTitle(@RequestParam String title) {
-        try {
-            Optional<Board> optionalBoard = boardService.getBoardByTitle(title);
-            if (optionalBoard.isPresent()) {
-                return new ResponseEntity<>(
-                        optionalBoard.get(),
-                        HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("No Board Found With A Title: " + title, HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception e) {
-            return errorResponse();
-        }
-    }
-
-    //Quick Exceptions Handlers
-    private ResponseEntity<String> errorResponse(){
+    private ResponseEntity<String> errorResponse() {
         return new ResponseEntity<>("Something Went Wrong :( ", HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    private ResponseEntity<String> noBoardFoundResponse(Long id){
-        return new ResponseEntity<>("No Board Found With Id: " + id, HttpStatus.NOT_FOUND);
+    private ResponseEntity<String> noBoardFoundResponse(UUID boardId) {
+        return new ResponseEntity<>("No Board Found With Id: " + boardId, HttpStatus.NOT_FOUND);
     }
 }

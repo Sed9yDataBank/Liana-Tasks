@@ -3,7 +3,6 @@ package com.kanbanedchain.lianatasks.Controllers;
 import com.kanbanedchain.lianatasks.DTOs.TaskDTO;
 import com.kanbanedchain.lianatasks.Models.Task;
 import com.kanbanedchain.lianatasks.Services.TaskService;
-import com.kanbanedchain.lianatasks.Utils.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,18 +10,17 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/tasks")
 @CrossOrigin(origins = "http://localhost:4200")
 public class TaskController {
-    final String clientUrl = Client.clientUrl;
 
     @Autowired
     private TaskService taskService;
 
     @GetMapping("/All")
-    @CrossOrigin(origins = clientUrl)
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> getAllTasks() {
         try {
@@ -34,85 +32,69 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/{id}")
-    @CrossOrigin(origins = clientUrl)
+    @GetMapping("/{taskId}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> getTask(@PathVariable(value = "task_Id") Long id) {
+    public ResponseEntity<?> getTaskById(@PathVariable(value = "taskId") UUID taskId) {
         try {
-            Optional<Task> optTask = taskService.getTaskById(id);
+            Optional<Task> optTask = taskService.getTaskById(taskId);
             if (optTask.isPresent()) {
                 return new ResponseEntity<>(
                         optTask.get(),
                         HttpStatus.OK);
             } else {
-                return noTaskFoundResponse(id);
+                return noTaskFoundResponse(taskId);
             }
         } catch (Exception e) {
             return errorResponse();
         }
     }
 
-    @GetMapping("")
-    @CrossOrigin(origins = clientUrl)
+    @PostMapping("/createTask/{boardId}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> getTaskByTitle(@RequestParam String title) {
-        try {
-            Optional<Task> optTask = taskService.getTaskByTitle(title);
-            if (optTask.isPresent()) {
-                return new ResponseEntity<>(
-                        optTask.get(),
-                        HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("No Task Found With A Title: " + title, HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception e) {
-            return errorResponse();
-        }
-    }
-
-    @PostMapping("/createTask/{board_Id}")
-    @CrossOrigin(origins = clientUrl)
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> createTask(@PathVariable (value = "board_Id") Long id,
+    public ResponseEntity<?> createTask(@PathVariable (value = "boardId") UUID boardId,
                                         @RequestBody TaskDTO taskDTO) {
         try {
             return new ResponseEntity<>(
-                    taskService.saveNewTask(id, taskDTO),
+                    taskService.saveNewTask(boardId, taskDTO),
                     HttpStatus.CREATED);
         } catch (Exception e) {
             return errorResponse();
         }
     }
 
-    @PutMapping("/{id}")
-    @CrossOrigin(origins = clientUrl)
+    @PutMapping("/{taskId}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> updateTask(@PathVariable(value = "task_Id") Long id, @RequestBody TaskDTO taskDTO) {
+    public ResponseEntity<?> updateTask(@PathVariable(value = "taskId") UUID taskId, @RequestBody TaskDTO taskDTO) {
         try {
-            Optional<Task> optTask = taskService.getTaskById(id);
+            Optional<Task> optTask = taskService.getTaskById(taskId);
             if (optTask.isPresent()) {
                 return new ResponseEntity<>(
                         taskService.updateTask(optTask.get(), taskDTO),
                         HttpStatus.OK);
             } else {
-                return noTaskFoundResponse(id);
+                return noTaskFoundResponse(taskId);
             }
         } catch (Exception e) {
             return errorResponse();
         }
     }
 
-    @DeleteMapping("/{id}")
-    @CrossOrigin(origins = clientUrl)
+    @PostMapping("/updateTaskStatus/{status}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> deleteTask(@PathVariable(value = "task_Id") Long id) {
+    public ResponseEntity<?> updateTaskStatus(@PathVariable("status") String status) {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{taskId}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<?> deleteTask(@PathVariable(value = "taskId") UUID taskId) {
         try {
-            Optional<Task> optTask = taskService.getTaskById(id);
+            Optional<Task> optTask = taskService.getTaskById(taskId);
             if (optTask.isPresent()) {
                 taskService.deleteTask(optTask.get());
-                return new ResponseEntity<>(String.format("Task With Id: %d Was Deleted", id), HttpStatus.OK);
+                return new ResponseEntity<>(String.format("Task With Id: %d Was Deleted", taskId), HttpStatus.OK);
             } else {
-                return noTaskFoundResponse(id);
+                return noTaskFoundResponse(taskId);
             }
         } catch (Exception e) {
             return errorResponse();
@@ -123,7 +105,7 @@ public class TaskController {
         return new ResponseEntity<>("Something Went Wrong Ops :(", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    private ResponseEntity<String> noTaskFoundResponse(Long id){
-        return new ResponseEntity<>("No Task Found With Id: " + id, HttpStatus.NOT_FOUND);
+    private ResponseEntity<String> noTaskFoundResponse(UUID taskId){
+        return new ResponseEntity<>("No Task Found With Id: " + taskId, HttpStatus.NOT_FOUND);
     }
 }

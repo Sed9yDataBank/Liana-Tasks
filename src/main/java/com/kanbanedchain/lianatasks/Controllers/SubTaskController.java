@@ -1,13 +1,9 @@
 package com.kanbanedchain.lianatasks.Controllers;
 
 import com.kanbanedchain.lianatasks.DTOs.SubTaskDTO;
-import com.kanbanedchain.lianatasks.DTOs.TaskDTO;
 import com.kanbanedchain.lianatasks.Models.SubTask;
-import com.kanbanedchain.lianatasks.Models.Task;
 import com.kanbanedchain.lianatasks.Models.TaskStatus;
 import com.kanbanedchain.lianatasks.Services.SubTaskService;
-import com.kanbanedchain.lianatasks.Services.TaskService;
-import com.kanbanedchain.lianatasks.Utils.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,18 +13,17 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/subTasks")
 @CrossOrigin(origins = "http://localhost:4200")
 public class SubTaskController {
-    final String clientUrl = Client.clientUrl;
 
     @Autowired
     private SubTaskService subTaskService;
 
     @GetMapping("/All")
-    @CrossOrigin(origins = clientUrl)
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> getAllSubTasks() {
         try {
@@ -40,115 +35,72 @@ public class SubTaskController {
         }
     }
 
-    @GetMapping("/{id}")
-    @CrossOrigin(origins = clientUrl)
+    @GetMapping("/{subTaskId}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> getSubTask(@PathVariable(value = "subTask_Id") Long id) {
+    public ResponseEntity<?> getSubTaskById(@PathVariable(value = "subTaskId") UUID subTaskId) {
         try {
-            Optional<SubTask> optSubTask = subTaskService.getSubTaskById(id);
+            Optional<SubTask> optSubTask = subTaskService.getSubTaskById(subTaskId);
             if (optSubTask.isPresent()) {
                 return new ResponseEntity<>(
                         optSubTask.get(),
                         HttpStatus.OK);
             } else {
-                return noSubTaskFoundResponse(id);
+                return noSubTaskFoundResponse(subTaskId);
             }
         } catch (Exception e) {
             return errorResponse();
         }
     }
 
-    @PostMapping("/createSubTask/{task_Id}")
-    @CrossOrigin(origins = clientUrl)
+    @PostMapping("/createSubTask/{taskId}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> createSubTask(@PathVariable (value = "task_Id") Long id,
+    public ResponseEntity<?> createSubTask(@PathVariable (value = "taskId") UUID taskId,
                                            @Valid @RequestBody SubTaskDTO subTaskDTO) {
         try {
             return new ResponseEntity<>(
-                    subTaskService.saveNewSubTask(id, subTaskDTO),
+                    subTaskService.saveNewSubTask(taskId, subTaskDTO),
                     HttpStatus.CREATED);
         } catch (Exception e) {
             return errorResponse();
         }
     }
 
-
-    @GetMapping("")
-    @CrossOrigin(origins = clientUrl)
+    @PutMapping("/move/{taskId}/{subTaskId}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> getSubTaskByStatus(@RequestParam TaskStatus status) {
-        try {
-            Optional<SubTask> optSubTask = subTaskService.getSubTaskByStatus(status);
-            if (optSubTask.isPresent()) {
-                return new ResponseEntity<>(
-                        optSubTask.get(),
-                        HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("No SubTask Found With A Status: " + status, HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception e) {
-            return errorResponse();
-        }
-    }
-
-    @GetMapping("/deadline")
-    @CrossOrigin(origins = clientUrl)
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> getSubTaskByDeadline(@RequestParam LocalDateTime deadline) {
-        try {
-            Optional<SubTask> optSubTask = subTaskService.getSubTaskByDeadline(deadline);
-            if (optSubTask.isPresent()) {
-                return new ResponseEntity<>(
-                        optSubTask.get(),
-                        HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("No SubTask Found With A Deadline: " + deadline,
-                        HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception e) {
-            return errorResponse();
-        }
-    }
-
-    @PutMapping("/move/{task_Id}/{subTask_Id}")
-    @CrossOrigin(origins = clientUrl)
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> updateSubTaskPlace(@PathVariable(value = "task_Id") Long id,
-                                                 @PathVariable(value = "subTask_Id") Long subTaskId,
+    public ResponseEntity<?> updateSubTaskPlace(@PathVariable(value = "taskId") UUID taskId,
+                                                 @PathVariable(value = "subTaskId") UUID subTaskId,
                                                  @RequestBody SubTaskDTO subTaskDTO) {
-        return new ResponseEntity<>(subTaskService.moveSubTask(id, subTaskId, subTaskDTO), HttpStatus.OK);
+        return new ResponseEntity<>(subTaskService.moveSubTask(taskId, subTaskId, subTaskDTO), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    @CrossOrigin(origins = clientUrl)
+    @PutMapping("/{subTaskId}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> updateSubTask(@PathVariable(value = "subTask_Id") Long id,
+    public ResponseEntity<?> updateSubTask(@PathVariable(value = "subTaskId") UUID subTaskId,
                                            @RequestBody SubTaskDTO subTaskDTO) {
         try {
-            Optional<SubTask> optSubTask = subTaskService.getSubTaskById(id);
+            Optional<SubTask> optSubTask = subTaskService.getSubTaskById(subTaskId);
             if (optSubTask.isPresent()) {
                 return new ResponseEntity<>(
                         subTaskService.updateSubTask(optSubTask.get(), subTaskDTO),
                         HttpStatus.OK);
             } else {
-                return noSubTaskFoundResponse(id);
+                return noSubTaskFoundResponse(subTaskId);
             }
         } catch (Exception e) {
             return errorResponse();
         }
     }
 
-    @DeleteMapping("/{id}")
-    @CrossOrigin(origins = clientUrl)
+    @DeleteMapping("/{subTaskId}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<?> deleteSubTask(@PathVariable(value = "subTask_Id") Long id) {
+    public ResponseEntity<?> deleteSubTask(@PathVariable(value = "subTaskId") UUID subTaskId) {
         try {
-            Optional<SubTask> optSubTask = subTaskService.getSubTaskById(id);
+            Optional<SubTask> optSubTask = subTaskService.getSubTaskById(subTaskId);
             if (optSubTask.isPresent()) {
                 subTaskService.deleteSubTask(optSubTask.get());
-                return new ResponseEntity<>(String.format("SubTask With Id: %d Was Deleted", id), HttpStatus.OK);
+                return new ResponseEntity<>("SubTask With Id: %d Was Deleted", HttpStatus.OK);
             } else {
-                return noSubTaskFoundResponse(id);
+                return noSubTaskFoundResponse(subTaskId);
             }
         } catch (Exception e) {
             return errorResponse();
@@ -159,8 +111,8 @@ public class SubTaskController {
         return new ResponseEntity<>("Something Went Wrong Ops :(", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    private ResponseEntity<String> noSubTaskFoundResponse(Long id){
-        return new ResponseEntity<>("No SubTask Found With Id: " + id, HttpStatus.NOT_FOUND);
+    private ResponseEntity<String> noSubTaskFoundResponse(UUID subTaskId){
+        return new ResponseEntity<>("No SubTask Found With Id: " + subTaskId, HttpStatus.NOT_FOUND);
     }
 }
 

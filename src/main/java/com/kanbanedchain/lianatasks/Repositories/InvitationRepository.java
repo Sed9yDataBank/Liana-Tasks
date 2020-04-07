@@ -1,24 +1,24 @@
 package com.kanbanedchain.lianatasks.Repositories;
 
-import java.util.List;
-import java.util.UUID;
-
 import com.kanbanedchain.lianatasks.Models.Invitation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.UUID;
+
 @Repository
-public interface InvitationRepository extends JpaRepository<Invitation, Long>{
+public interface InvitationRepository extends JpaRepository<Invitation, UUID>{
 
-    Boolean existsByUid(Long uid);
+    Boolean existsByUserId(UUID userId);
 
-    @Query("SELECT i.pid FROM Invitations i WHERE i.uid=:uid")
-    Long getPidByUid(@Param("uid") Long uid);
+    @Query("SELECT i.passId FROM Invitation i WHERE i.userId=:userId")
+    UUID getPassIdByUserId(@Param("userId") UUID userId);
 
-    @Query("SELECT i.pid FROM Invitations i WHERE i.uid=:uid")
-    List<Long> findByUid(Long uid);
+    @Query("SELECT i.passId FROM Invitation i WHERE i.userId=:userId")
+    List<UUID> findByUserId(UUID userId);
 
-    List<Invitation> findByPid(Long pid);
+    List<Invitation> findByPassId(UUID passId);
 }

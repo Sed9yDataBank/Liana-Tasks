@@ -3,7 +3,6 @@ package com.kanbanedchain.lianatasks.Securities;
 import com.kanbanedchain.lianatasks.Securities.JWT.JWTAuthEntryPoint;
 import com.kanbanedchain.lianatasks.Securities.JWT.JWTAuthTokenFilter;
 import com.kanbanedchain.lianatasks.Securities.Services.UserDetailsImplementation;
-import com.kanbanedchain.lianatasks.Utils.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +24,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         proxyTargetClass=true
 )
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
-    final String clientUrl = Client.clientUrl;
 
     @Autowired
     UserDetailsImplementation userDetailsService;

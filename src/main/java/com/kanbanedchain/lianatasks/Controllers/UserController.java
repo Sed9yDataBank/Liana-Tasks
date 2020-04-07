@@ -2,13 +2,14 @@ package com.kanbanedchain.lianatasks.Controllers;
 
 import com.kanbanedchain.lianatasks.DTOs.UserListDTO;
 import com.kanbanedchain.lianatasks.Services.UserService;
-import com.kanbanedchain.lianatasks.Utils.Client;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/users")
@@ -18,10 +19,7 @@ public class UserController {
     @Autowired
     private UserService service;
 
-    final String clientUrl = Client.clientUrl;
-
     @GetMapping("/getAllUser")
-    @CrossOrigin(origins = clientUrl)
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<UserListDTO> getAllUser() {
         UserListDTO userListDTO = new UserListDTO();
@@ -29,21 +27,11 @@ public class UserController {
         return new ResponseEntity<UserListDTO>(userListDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/getAllUser/{id}")
-    @CrossOrigin(origins = clientUrl)
+    @GetMapping("/getUser/{userId}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<UserListDTO> getAllUserByBoardId(@PathVariable("board_Id") Long id) {
+    public ResponseEntity<UserListDTO> getUserById(@PathVariable("userId") UUID userId) {
         UserListDTO userListDTO = new UserListDTO();
-        userListDTO.setUserList(service.getUserByBoardsId(id));
-        return new ResponseEntity<UserListDTO>(userListDTO, HttpStatus.OK);
-    }
-
-    @GetMapping("/getUser/{uid}")
-    @CrossOrigin(origins = clientUrl)
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<UserListDTO> getUserById(@PathVariable("id") Long uid) {
-        UserListDTO userListDTO = new UserListDTO();
-        BeanUtils.copyProperties(service.getUser(uid), userListDTO);
+        BeanUtils.copyProperties(service.getUser(userId), userListDTO);
         return new ResponseEntity<UserListDTO>(userListDTO, HttpStatus.OK);
     }
 }

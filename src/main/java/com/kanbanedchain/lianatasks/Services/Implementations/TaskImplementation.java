@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,15 +29,7 @@ public class TaskImplementation implements TaskService {
     @Override
     @Transactional
     public List<Task> getAllTasks() {
-        List<Task> tasksList = new ArrayList<>();
-        taskRepository.findAll().forEach(tasksList::add);
-        return tasksList;
-    }
-
-    @Override
-    @Transactional
-    public Optional<Task> getTaskById(Long id) {
-        return taskRepository.findById(id);
+        return new ArrayList<Task>(taskRepository.findAll());
     }
 
     @Override
@@ -47,11 +40,18 @@ public class TaskImplementation implements TaskService {
 
     @Override
     @Transactional
-    public Task saveNewTask(Long id, TaskDTO taskDTO) {
-        return boardRepository.findById(id).map(board -> {
+    public Optional<Task> getTaskById(UUID taskId) {
+        return taskRepository.findById(taskId);
+    }
+
+    @Override
+    @Transactional
+    public Task saveNewTask(UUID boardId, TaskDTO taskDTO) {
+        return boardRepository.findById(boardId).map(board -> {
             taskDTO.setBoard(board);
         return taskRepository.save(convertDTOToTask(taskDTO));
-        }).orElseThrow(() -> new SecurityException("Board With " + id + " Was Not Found , Unable To Create Task"));
+        }).orElseThrow(() -> new SecurityException("Board With " + boardId + " Was Not Found ," +
+                " Unable To Create Task"));
     }
 
     @Override
@@ -82,11 +82,5 @@ public class TaskImplementation implements TaskService {
             task.setStatus(taskDTO.getStatus());
         }
         return task;
-    }
-    
-    @Override
-    @Transactional
-    public List<Task> listAllTasksByStatus() {
-        return taskRepository.listAllTasksByStatus().collect(Collectors.toCollection(ArrayList::new));
     }
 }

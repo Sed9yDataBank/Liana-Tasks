@@ -7,7 +7,9 @@ import com.kanbanedchain.lianatasks.Models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 
 public class BoardDTO {
@@ -18,16 +20,18 @@ public class BoardDTO {
     @JsonIgnore
     private Board board;
 
+    private UUID admin;
+
     @JsonIgnore
-    private User user;
+    private List<User> users;
 
     public BoardDTO(Board board) {
         this.board = board;
     }
 
     @JsonProperty
-    public Long getId() {
-        return board.getId();
+    public UUID getBoardId() {
+        return board.getBoardId();
     }
 
     @JsonProperty
@@ -40,10 +44,22 @@ public class BoardDTO {
         return board.getBackgroundImagePath();
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     public void setBackgroundImagePath() {
+    }
+
+    public UUID getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(UUID admin) {
+        this.admin = admin;
     }
 }

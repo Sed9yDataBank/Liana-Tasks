@@ -1,6 +1,7 @@
 package com.kanbanedchain.lianatasks.Messages.Responses;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import org.springframework.security.core.GrantedAuthority;
 
@@ -8,11 +9,11 @@ public class JWTResponse {
     private String token;
     private String type = "Bearer";
     private String username;
-    public long uid;
+    public UUID uid;
     private Collection<? extends GrantedAuthority> authorities;
 
     public JWTResponse(String accessToken, String username, Collection<? extends GrantedAuthority> authorities,
-                       long uid) {
+                       UUID uid) {
         this.token = accessToken;
         this.username = username;
         this.authorities = authorities;
@@ -47,11 +48,11 @@ public class JWTResponse {
         return authorities;
     }
 
-    public long getId() {
+    public UUID getId() {
         return uid;
     }
 
-    public void setId(long uid) {
+    public void setId(UUID uid) {
         this.uid = uid;
     }
 }

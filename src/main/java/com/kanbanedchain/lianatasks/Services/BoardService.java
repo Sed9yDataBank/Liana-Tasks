@@ -1,34 +1,37 @@
 package com.kanbanedchain.lianatasks.Services;
 
 import com.kanbanedchain.lianatasks.DTOs.BoardDTO;
+import com.kanbanedchain.lianatasks.DTOs.BoardListDTO;
+import com.kanbanedchain.lianatasks.DTOs.NewBoardDTO;
 import com.kanbanedchain.lianatasks.DTOs.TaskDTO;
 import com.kanbanedchain.lianatasks.Models.Board;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface BoardService {
 
     List<Board> getAllBoards();
 
-    Optional<Board> getBoardById(Long id);
+    Optional<Board> getBoardById(UUID boardId);
 
-    Optional<Board> getBoardByTitle(String title);
+    UUID saveNewBoard(NewBoardDTO newBoardDTO, UUID admin);
 
-    Board saveNewBoard(BoardDTO BoardDTO, Long id);
+    void saveBoardImage(UUID boardId, MultipartFile file);
 
-    void saveBoardImage(Long id, MultipartFile file);
-
-    byte[] downloadBoardImage(Long id);
+    byte[] downloadBoardImage(UUID boardId);
 
     Board updateBoard(Board oldBoard, BoardDTO newBoardDTO);
 
     void deleteBoard(Board Board);
 
-    Board addNewTaskToBoard(Long BoardId, TaskDTO taskDTO);
+    Board addNewTaskToBoard(UUID boardId, TaskDTO taskDTO);
 
-    List<Board> listAllBoardsByUserId();
+    boolean addUser(UUID userId, String code);
 
-    List<BoardDTO> getBoardsByUser(Long id);
+    void inviteUsers(UUID[] users, String code, UUID passId);
+
+    BoardListDTO getAllByAdmin(UUID id);
 }

@@ -7,9 +7,9 @@ import java.util.UUID;
 
 public interface InvitationService {
 
-    public String generatePassCodeForBoard(Long id);
+    String generatePassCodeForBoard(UUID boardId);
 
-    public String sendPassCode(String email, String passCode, Board board);
+    void sendPassCode(String email, String passCode, Board board);
 
-    public boolean sendMail(String to, String text, String subject) throws MessagingException;
+    void sendMail(String to, String text, String subject) throws MessagingException;
 }
