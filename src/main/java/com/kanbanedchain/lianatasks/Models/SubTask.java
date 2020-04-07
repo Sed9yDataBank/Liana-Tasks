@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -17,9 +18,8 @@ import java.time.LocalDateTime;
 public class SubTask extends AuditModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "subTask_Id")
-    private Long Id;
+    private UUID subTaskId;
 
     @NotNull
     @Size(min = 4, max = 80)
@@ -38,9 +38,9 @@ public class SubTask extends AuditModel {
     @JsonIgnore
     private Task task;
 
-    public SubTask(Long id, String content,
+    public SubTask(UUID subTaskId, String content,
                    LocalDateTime deadline, TaskStatus status) {
-        this.Id = id;
+        this.subTaskId = subTaskId;
         this.content = content;
         this.deadline = deadline;
         this.status = status;
@@ -48,10 +48,6 @@ public class SubTask extends AuditModel {
 
     public SubTask() {
 
-    }
-
-    public Long getId() {
-        return Id;
     }
 
     public String getContent() {
@@ -86,7 +82,11 @@ public class SubTask extends AuditModel {
         this.task = task;
     }
 
-    public void setId(Long id) {
-        Id = id;
+    public UUID getSubTaskId() {
+        return subTaskId;
+    }
+
+    public void setSubTaskId(UUID subTaskId) {
+        this.subTaskId = subTaskId;
     }
 }

@@ -7,6 +7,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.NaturalId;
 
 @Entity
@@ -19,9 +20,9 @@ import org.hibernate.annotations.NaturalId;
         })
 })
 public class User extends AuditModel{
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID userId;
 
     @NotBlank
     @Size(min=3, max = 50)
@@ -50,7 +51,8 @@ public class User extends AuditModel{
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    @ManyToMany(mappedBy = "users")
+    @JsonManagedReference
     private List<Board> boards = new ArrayList<>();
 
     public User() {}
@@ -62,12 +64,12 @@ public class User extends AuditModel{
         this.password = password;
     }
 
-    public Long getId() {
-        return id;
+    public UUID getUserId() {
+        return userId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {

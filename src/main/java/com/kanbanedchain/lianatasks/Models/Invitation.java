@@ -7,40 +7,41 @@ import javax.persistence.Id;
 
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Entity
 @Component
 public class Invitation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private UUID id;
 
-    private Long pid;
+    private UUID passId;
 
-    private Long uid;
+    private UUID userId;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public Long getPid() {
-        return pid;
+    public UUID getPassId() {
+        return passId;
     }
 
-    public void setPid(Long pid) {
-        this.pid = pid;
+    public static void setPassId(UUID passId) {
+        passId = passId;
     }
 
-    public Long getUid() {
-        return uid;
+    public UUID getUserId() {
+        return userId;
     }
 
-    public void setUid(Long uid) {
-        this.uid = uid;
+    public static void setUserId(UUID userId) {
+        userId = userId;
     }
 }
 

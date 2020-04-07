@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -17,9 +18,8 @@ import java.util.List;
 public class Task extends AuditModel{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_Id")
-    private Long Id;
+    private UUID taskId;
 
     @NotNull
     @Size(min = 3, max = 25)
@@ -39,8 +39,8 @@ public class Task extends AuditModel{
     @JsonIgnore
     private Board board;
 
-    public Task(Long id, String title, TaskStatus status) {
-        this.Id = id;
+    public Task(UUID taskId, String title, TaskStatus status) {
+        this.taskId = taskId;
         this.title = title;
         this.status = status;
     }
@@ -57,10 +57,6 @@ public class Task extends AuditModel{
         return status;
     }
 
-    public Long getId() {
-        return Id;
-    }
-
     public void setTitle(String title) {
         this.title = title;
     }
@@ -69,7 +65,11 @@ public class Task extends AuditModel{
         this.status = status;
     }
 
-    public void setId(Long id) {
-        Id = id;
+    public UUID getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(UUID taskId) {
+        this.taskId = taskId;
     }
 }

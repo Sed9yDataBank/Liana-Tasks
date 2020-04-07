@@ -1,6 +1,7 @@
 package com.kanbanedchain.lianatasks.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -8,10 +9,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Entity
 @Data
@@ -19,9 +17,11 @@ import java.util.Optional;
 public class Board extends AuditModel{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_Id")
-    private Long Id;
+    private UUID boardId;
+
+    @NotNull
+    private UUID admin;
 
     @NotNull
     @Length(min = 3, max = 10)
@@ -32,14 +32,9 @@ public class Board extends AuditModel{
     @OneToMany(mappedBy = "board", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private List<Task> tasks = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumns({
-            @JoinColumn(name = "username", insertable = false, updatable = false, referencedColumnName = "username"),
-            @JoinColumn(name = "email", insertable = false, updatable = false, referencedColumnName = "email")
-    })
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private User user;
+    @ManyToMany
+    @JsonManagedReference
+    private List<User> users;
 
     public void addTask(Task task) {
 
@@ -49,14 +44,14 @@ public class Board extends AuditModel{
         tasks.add(task);
     }
 
-    public Board(Long id, String title, String backgroundImagePath) {
-        this.Id = id;
+    public Board(UUID boardId, String title, String backgroundImagePath, UUID admin) {
+        this.boardId = boardId;
         this.title = title;
         this.backgroundImagePath = backgroundImagePath;
+        this.admin = admin;
     }
 
     public Board() {
-
     }
 
     public String getTitle() {
@@ -67,10 +62,6 @@ public class Board extends AuditModel{
         return Optional.ofNullable(backgroundImagePath);
     }
 
-    public Long getId() {
-        return Id;
-    }
-
     public void setTitle(String title) {
         this.title = title;
     }
@@ -79,8 +70,44 @@ public class Board extends AuditModel{
         this.backgroundImagePath = backgroundImagePath;
     }
 
-    public void setId(Long id) {
-        Id = id;
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public void setAdmin(UUID admin) {
+        this.admin = admin;
+    }
+
+    public UUID getAdmin() {
+        return admin;
+    }
+
+    public UUID getBoardId() {
+        return boardId;
+    }
+
+    public void setBoardId(UUID boardId) {
+        this.boardId = boardId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Board that = (Board) o;
+        return Objects.equals(boardId, that.boardId) &&
+                Objects.equals(title, that.title) &&
+                Objects.equals(admin, that.admin) &&
+                Objects.equals(backgroundImagePath, that.backgroundImagePath);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(boardId, admin, title, backgroundImagePath);
     }
 }
 

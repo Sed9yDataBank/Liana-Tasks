@@ -7,31 +7,33 @@ import javax.persistence.Id;
 
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Entity
 @Component
 public class PassCode {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
-    private Long pid;
+    @Id
+    private UUID id;
+
+    private UUID passId;
 
     private String code;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public Long getPid() {
-        return pid;
+    public UUID getPassId() {
+        return passId;
     }
 
-    public void setPid(Long pid) {
-        this.pid = pid;
+    public void setPassId(UUID passId) {
+        this.passId = passId;
     }
 
     public String getCode() {
