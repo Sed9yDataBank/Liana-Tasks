@@ -1,0 +1,3 @@
+[submodule "KCLTs-Frontend"]
+	path = KCLTs-Frontend
+	url = https://github.com/Sed9yDataBank/KCLTs-Frontend.git
