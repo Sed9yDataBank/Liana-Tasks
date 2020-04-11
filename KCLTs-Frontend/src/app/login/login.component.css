@@ -1,0 +1,17 @@
+input {
+    width: 100%;
+    margin-bottom: 25px;
+}
+button:hover {
+    transform: translateY(-3px);
+box-shadow: 0 2rem 3rem
+rgba(0,0,0,.17);
+}
+button {
+    transition: all .2s;
+}
+
+p {
+    position: relative;
+    top: -15px;
+}

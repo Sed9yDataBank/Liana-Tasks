@@ -1,0 +1,497 @@
+/* Masthead */
+
+.masthead {
+    flex-basis: 4rem;
+    display: flex;
+    align-items: center;
+    padding: 0 0.8rem;
+    background-color: white;
+    box-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.1);
+}
+
+.masthead .btn {
+    background-color: transparent;
+    border-radius: 0.3rem;
+    transition: background-color 150ms;
+}
+
+.masthead .btn:hover {
+    background-color: transparent;
+}
+
+.boards-menu {
+    display: flex;
+    flex-shrink: 0;
+}
+
+h1 {
+    color: gray;
+    font-size: 20px;
+    line-height: 5px;
+    text-align: center !important;
+    margin-left: 50px;
+}
+
+h6 {
+    color: white;
+    font-family: "Courgette", cursive;
+}
+.boards-btn {
+    flex-basis: 15rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: Gray;
+    margin-right: 0.8rem;
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+}
+
+.boards-btn-icon {
+    font-size: 1.7rem;
+    padding-right: 1.2rem;
+}
+
+.boards-btn:hover {
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+    perspective: 1000px;  
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+  
+  30%, 50%, 70% {
+    transform: translate3d(-2px, 0, 0);
+  }
+  40%, 60% {
+    transform: translate3d(2px, 0, 0);
+  }
+}
+
+.logo {
+    flex: 1;
+    font-family: "Courgette", cursive;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0 2rem;
+    transition: color 150ms;
+    text-align: center;
+    white-space: nowrap;
+    display: flex;
+    pointer-events: none;
+}
+
+.logo:hover {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.logo-icon {
+    padding-right: 0.4rem;
+}
+
+.user-settings {
+    display: flex;
+    height: 3rem;
+    color: #fff;
+}
+
+.user-settings-btn {
+    font-size: 1.5rem;
+    width: 3rem;
+    margin-right: 0.8rem;
+}
+
+.user-settings-btn:hover {
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.28);
+    -webkit-transform: translateY(-5px);
+    -ms-transform: translateY(-5px);
+    transform: translateY(-5px);
+}
+
+.user-settings-btn:last-of-type {
+    margin-right: 0;
+}
+
+button {
+    box-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.1) !important;
+    border-color: transparent !important;
+
+}
+
+.trello {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border-radius: 3px;
+    position: relative;
+    margin: 5px;
+  }
+  .trello:after, .trello:before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    width: 15px;
+    background: #fff;
+    border-radius: 2px;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-direction: alternate;
+    animation-duration: 0.4s;
+  }
+  .trello:before {
+    left: 6px;
+    -webkit-animation-name: first-animation;
+  }
+  .trello:after {
+    right: 6px;
+    -webkit-animation-name: second-animation;
+  }
+  .trello.default {
+    background: linear-gradient(to bottom right, #3EFF00, #FFFFFF);  
+}
+  
+  @keyframes first-animation {
+    from {
+      height: 38px;
+    }
+    to {
+      height: 5px;
+    }
+  }
+  @keyframes second-animation {
+    from {
+      height: 1px;
+    }
+    to {
+      height: 38px;
+    }
+  }
+  /* -----
+SVG Icons - svgicons.sparkk.fr
+----- */
+
+.svg-icon {
+    width: 1em;
+    height: 1em;
+  }
+  
+  .svg-icon path,
+  .svg-icon polygon,
+  .svg-icon rect {
+    fill: #3EFF00;
+  }
+  
+  .svg-icon circle {
+    stroke: #3EFF00;
+    stroke-width: 1;
+  }
+
+.root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-image: url(/assets/Wallpaper.jpg);
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+  .app-name {
+    font-size: 28px;
+    font-family: 'Lato', sans-serif;
+    font-weight: bold;
+  }
+  
+  .has-gradient-text {
+    background: -webkit-linear-gradient(#13f7f4, #2af598);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .board {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-width: 0;
+    min-height: 0;
+  }
+  .board .board-bar {
+    padding: 8px 15px;
+  }
+  .board .board-bar .board-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    font-family: jaf-facitweb,Helvetica Neue,Arial,sans-serif;
+  }
+  .board .board-wrapper {
+    display: flex;
+    flex-grow: 1;
+    overflow-x: auto;
+  }
+  .board .board-wrapper .board-columns {
+    display: flex;
+    flex-grow: 1;
+  }
+  .board .board-wrapper .board-columns .board-column {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-basis: 0;
+    min-width: 300px;
+    margin: 50px;
+    padding: 25px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  .inputs:hover {
+    background-color: hsla(104.1, 54.4%, 49%, 0.47);
+  }
+  input::selection {
+      background-color: white;
+  }
+  .board .board-wrapper .board-columns .board-column:not(:first-child) {
+    margin-left: 0;
+  }
+  .board .board-wrapper .board-columns .board-column .column-title {
+    font-size: 20px;
+    font-weight: 800;
+    font-family: 'Lato', sans-serif;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    color: white;
+  }
+  
+  .tasks-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    cursor: pointer;
+  }
+  
+  .task {
+    display: flex;
+    padding: 15px 12px;
+    background: white;
+    border-bottom: solid 1px #ddd;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.05), 0 3px 14px 2px rgba(0, 0, 0, 0.05);
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
+    word-wrap: break-word;
+    color: #4fa658;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    }
+  
+  .cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  }
+  
+  .cdk-drag-placeholder {
+    opacity: 0;
+  }
+  
+  .cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+  
+  .tasks-container.cdk-drop-list-dragging .task:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+  
+  input {
+    color: white;
+  }
+
+  #static:focus {
+    font-size: 20px;
+    font-weight: 800;
+    font-family: 'Lato', sans-serif;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    color:
+        white;
+    
+  }
+
+  #dync:focus {
+      font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
+  word-wrap: break-word;
+  color:
+  #4fa658;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  background-color: white !important;
+
+  }
+
+  .invite-btn {
+      border-radius: 3px;
+  color: #fff;
+  cursor: default;
+  float: left;
+  height: 32px;
+  line-height: 32px;
+  margin: 0 4px 4px 0;
+  margin-left: 0px;
+  overflow: hidden;
+  position: relative;
+  text-decoration: none;
+  cursor: pointer;
+  background-color: hsla(0,0%,100%,.32);
+  margin-left: 8px;
+  width: 90px;
+  text-align: center !important;
+ font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
+  word-wrap: break-word;
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 15px;
+  }
+
+  .invite-btn:hover {
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+    perspective: 1000px;  
+  }
+
+  .pop {
+  
+width: 300px;
+margin: 56px auto;
+box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.1) !important;
+border-radius: 4px;
+background:
+rgba(255, 255, 255, 0.5);
+    position: absolute;
+    left: 433px;
+    top: 55px;
+}
+
+#title {
+position: relative;
+left: 5px;
+top: 5px;
+padding: 2px 8px;
+box-shadow: none;
+background:
+transparent;
+border: none;
+color:
+white;
+font-size: 16px;
+font-weight: 700;
+line-height: 24px;
+margin: 0;
+min-height: 0;
+outline: 0;
+}
+
+#title:hover {
+background-color: rgba(53, 49, 49, 0.39);
+}
+
+.file {
+font-family: Helvetica,sans-serif;
+font-size: 14px;
+line-height: 20px;
+font-weight: 600;
+padding-top: 8px;
+padding-left: 5px;
+color: white;
+}
+
+.pop button {
+width: 105.283px;
+height: 25px;
+background-color: white;
+box-shadow: none;
+border: none;
+border-radius: 3px;
+color: gray;
+position: relative;
+padding-left: 5px;
+line-height: 20px;
+top: 35px;
+left: 5px;
+text-align: center;
+cursor: pointer;
+}
+
+.pop button:hover {
+background-color: rgba(0,0,0,.4);
+color: white;
+}
+
+.svg-icon-exit {
+  width: 1em;
+  height: 1em;
+  float: right;
+  cursor: pointer;
+}
+
+.svg-icon-exit:hover {
+
+    box-shadow: 0px 0px 150px #000000;
+    z-index: 2;
+    -webkit-transition: all 200ms ease-in;
+    -webkit-transform: scale(1.5);
+    -ms-transition: all 200ms ease-in;
+    -ms-transform: scale(1.5);   
+    -moz-transition: all 200ms ease-in;
+    -moz-transform: scale(1.5);
+    transition: all 200ms ease-in;
+    transform: scale(1.5);
+
+}
+.svg-icon-exit path,
+.svg-icon-exit polygon,
+.svg-icon-exit rect {
+fill: black;
+}
+
+.svg-icon-exit circle {
+stroke: black;
+stroke-width: 1;
+} 
+.material-icons {
+  font-size: 18px;
+}
+.material-icons:hover{transform: translateY(-3px);}
+.material-icons.orange600 { color: #FB8C00;
+padding-right: 2px;font-size: 18px; }
+.material-icons.orange600:hover { transform: translateY(-5px);}
+.controls {
+
+  opacity: 0.1;
+}
+
+.controls:hover {
+  opacity: 1;
+}
+
+.svg-icon-delete {
+  width: 2.3em;
+  height: 2.3em;
+
+}
+
+.svg-icon-delete path,
+.svg-icon-delete polygon,
+.svg-icon-exit rect {
+  fill: #622b2bdb;}
+
+.svg-icon-delete circle {
+  fill: #622b2bdb;stroke-width: 1;
+} 
