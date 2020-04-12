@@ -32,13 +32,13 @@ Sara Who Was Giving A Hole View, Idea About Kanbaned Chain Liana Tasks Said :  I
 Andrai Also Said : Their Board Is Simply Gorgeous, I Can't Believe There Are Such Talented UX / UI. I Can't Wait To Start Using It Since It Doesn't Ask For My Credit Card Information, But This Is More Than Enough For Us And Our Needs.
 
 ## Screenshots
-![KCLTs Home Page](https://github.com/Sed9yDataBank/Kanbaned-Chain-Liana-Tasks/blob/master/KCLTs%20Screenshots/First.gif)
+![KCLTs Home Page](https://github.com/Sed9yDataBank/Kanbaned-Chain-Liana-Tasks/blob/master/KCLTS%20Screenshots/First.gif)
 
-![KCLTs Login](https://github.com/Sed9yDataBank/Kanbaned-Chain-Liana-Tasks/blob/master/KCLTs%20Screenshots/Login.gif)
+![KCLTs Login](https://github.com/Sed9yDataBank/Kanbaned-Chain-Liana-Tasks/blob/master/KCLTS%20Screenshots/Login.gif)
 
-![KCLTs Boards](https://github.com/Sed9yDataBank/Kanbaned-Chain-Liana-Tasks/blob/master/KCLTs%20Screenshots/Boards.gif)
+![KCLTs Boards](https://github.com/Sed9yDataBank/Kanbaned-Chain-Liana-Tasks/blob/master/KCLTS%20Screenshots/Boards.gif)
 
-![KCLTs Tasks](https://github.com/Sed9yDataBank/Kanbaned-Chain-Liana-Tasks/blob/master/KCLTs%20Screenshots/Tasks.gif)
+![KCLTs Tasks](https://github.com/Sed9yDataBank/Kanbaned-Chain-Liana-Tasks/blob/master/KCLTS%20Screenshots/Tasks.gif)
 
 ## Technologies
 
