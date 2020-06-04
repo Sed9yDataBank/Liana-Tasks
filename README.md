@@ -1,6 +1,6 @@
-# Kanbaned Chain Liana Tasks ( KCLTs )
-> KCLTs Is A Collaboration Tool That Organizes Your projects Into Boards. It Is Free, Flexible, And Visual Way To Manage Your Projects And Organize Anything In Kanban Boards And You Can Manage Groupe Projects By Inviting Other Users To The Kanban Board.
-> KCLTs, Kanbaned Chain Liana Tasks, Inspired With Essential BCCAs, Kanbaned For Kanban, Chain, We All Know What Does That Mean, Liana For The Big Liana Tree And Tasks, You Know It Already.
+# Kanbaned Chain Liana Tasks ( KCLTs ) < Renamed To Liana Tasks Since The Name Was Too Long >
+> Liana Tasks is a collaboration tool that organizes your projects into boards. It is free, flexible, and visual way to manage your projects and organize anything in kanban boards and you can manage groupe projects by inviting other users to the kanban board.
+> For Fun : KCLTs, Kanbaned Chain Liana Tasks, Inspired from essential BCCAS, kanbaned for kanban, chain, we all know what does that mean, liana for the big liana tree and tasks, you know it already.
 
 ## Table of contents
 * [General info](#general-info)
@@ -13,7 +13,7 @@
 * [Contact](#contact)
 
 ## General info
-With The Implementation Of Kanbaned Chain Liana Tasks, Users Will Be Able To:
+Using Liana Tasks users will be able to:
 
     Have A Sustainable, Paper Less Environment
 
@@ -23,13 +23,13 @@ With The Implementation Of Kanbaned Chain Liana Tasks, Users Will Be Able To:
 
     Save 24000+ Hours A Year
 
-Aside From The Time-saving Aspect, I Think It’s Having Everything In One Place, To Make Sure That Bits Of Paper Don’t Get Lost, Emails Don’t Get Deleted, Well, Stuff Gets Deleted Out Of Ep As Well, But Really Not The Way An Email Can Slip Through The Cracks, Right? It Made The Workflow More Efficient. The End Result Is That We’re Actually Making More Stuff Done Instead Of Less.
+Aside from the time-saving aspect, I think it’s having everything in one place, to make sure that bits of paper don’t get lost, emails don’t get deleted, well, stuff gets deleted out of ep as well, but really not the way an email can slip through the cracks, right? It made the workflow more efficient. The end result is that we’re actually making more stuff done instead of less.
 
-We Recently Implemented One Of Our Processes Directly Into Easy Projects. It Eliminated A Process That We Ran Through Spreadsheets. We Estimate That It Will Save Us 1-2 Hours Per Project Just In Set-up Time. The Customizable Nature Of Easy Projects Is What Really Helped Improve Our Workflow. It Is Highly Adaptable. If An Internal Processes Changes, We’re Confident That Easy Projects Will Be Able To Adapt. If Something Doesn’t Work For You Right Out Of The Box, 9 Times Out Of 10 You Will Be Able To Make A Few Easy Customizations To Solve Your Issue.
+We recently implemented one of our processes directly into easy projects. It eliminated a process that we ran through spreadsheets. We estimate that it will save us 1-2 hours per project just in set-up time. The customizable nature of easy projects is what really helped improve our workflow. It is highly adaptable. If an internal processes changes, we’re confident that easy projects will be able to adapt. If something doesn’t work for you right out of the box, 9 times out of 10 you will be able to make a few easy customizations to solve your issue.
 
-Sara Who Was Giving A Hole View, Idea About Kanbaned Chain Liana Tasks Said :  It's Really Helpful When It Comes To Project Management. I Liked That You Can Set Deadlines And Be Able To Know Which Card/Assignment To Prioritize And Finish Within The Given Time Frame. Plus It Is Free And It Doesn't Ask Many Of Your Personal Information.
+Sara who was giving a hole view, idea about Liana Tasks said :  It's really helpful when it comes to project management. I liked that you can set deadlines and be able to know which card/assignment to prioritize and finish within the given time frame. Plus it is free and it doesn't ask many of your personal information.
 
-Andrai Also Said : Their Board Is Simply Gorgeous, I Can't Believe There Are Such Talented UX / UI. I Can't Wait To Start Using It Since It Doesn't Ask For My Credit Card Information, But This Is More Than Enough For Us And Our Needs.
+Andrai also said : Their board is simply gorgeous, I can't believe there are such talented ux / ui. I can't wait to start using it since it doesn't ask for my credit card information, but this is more than enough for us and our needs.
 
 ## Screenshots
 ![KCLTs Home Page](https://github.com/Sed9yDataBank/Kanbaned-Chain-Liana-Tasks/blob/master/KCLTS%20Screenshots/First.gif)
@@ -43,24 +43,26 @@ Andrai Also Said : Their Board Is Simply Gorgeous, I Can't Believe There Are Suc
 ## Technologies
 
 For Frontend
-* Angular ( For Non-Technical Viewers Of This Project, HTML, CSS, JavaScript, TypeScript )
+* Angular 
 * Bootstrap
 * NGX Bootstrap
 
 For Backend
-* SpringBoot ( For Non-Technical Viewers Of This Project, J2EE Java )
+* SpringBoot
 * JPA 
 * Hibernate
 * PostgreSQL
 * Postman
-* AWS S3 Cloud Services
-* Authentication With JWT
+* AWS Cloud Services
+* JWT
 * Gmail API
 
 
 ## Setup
 
-Describe how to install / setup your local environement / add link to demo version.
+You can clone this repository and setup the frontend, server and provide your own postgres credentials, aws and gmail api tokens.
+
+Why no live demo ? deploying this project is going to cost money for a good hosting service and frontend is still not completed.
 
 ## Code Examples
 
@@ -108,17 +110,17 @@ Describe how to install / setup your local environement / add link to demo versi
 
 ## Features
 
-* Simple Kanban Board To Manage Tasks And Subtasks
-* Board Members Invitation For Collaborative Projects
-* Status And Deadlines Management For Tasks And SubTask
-* Blog Section To Manage Your Boards Better
+* Simple kanban board to manage tasks and subtasks.
+* Board members invitation system for collaborative projects.
+* Status and deadlines management.
+* Blog section to get more in depth on how to use kanban boards more efficiently.
 
 To-do List:
-* Finish Coding The Frontend
-* Add Setting And History Changes Menu In Boards
+* Finish coding the frontend
+* Add setting and history changes menu in boards
 
 ## Status
-Project Is: _in progress_, Currentley Developing The Frontend Part To Connect With THe Features Added In Backend
+Project Is: _in progress_, Currentley Developing The Frontend Part 
 
 ## Inspiration
 Project Inspired By Sedki Benzid. Based On Building A Easy, Free To Use Task Management Tool
